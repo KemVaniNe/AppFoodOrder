@@ -1,18 +1,17 @@
 package com.example.foodorderapp.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+
 import android.view.View;
-import android.view.ViewGroup;
+
 import android.widget.Toast;
 
-import com.example.foodorderapp.R;
+
 import com.example.foodorderapp.adapter.CategoryAdapter;
 import com.example.foodorderapp.adapter.FoodAdapter;
 import com.example.foodorderapp.databinding.ActivityMainBinding;
@@ -20,10 +19,7 @@ import com.example.foodorderapp.domain.CategoryDomain;
 import com.example.foodorderapp.model.FoodModel;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,11 +32,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
-    String categoryId="";
-
     private CategoryAdapter adapter;
     private FoodAdapter foodAdapter;
     private PreferenceManeger preferenceManeger;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         setListener();
         loadfood();
         recyclerViewCategory();
-
     }
 
     void loadfood(){
@@ -86,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
   }
+
     private void recyclerViewCategory(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         binding.recyclerview.setLayoutManager(linearLayoutManager);
@@ -100,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new CategoryAdapter(category);
         binding.recyclerview.setAdapter(adapter);
     }
+
     private void setListener(){
         binding.imageLogOut.setOnClickListener(v->Logout());
         binding.btnUser.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
-    }
+
+
+}
     private void loadUserDetails(){
         binding.tvUsername.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
 

@@ -3,6 +3,8 @@ package com.example.foodorderapp.utilities;
 public class Contants {
     public static  final  String KEY_COLEECTION_USERS = "users";
     public static  final  String KEY_USERNAME = "username";
+
+    public static  final  String KEY_PHONE = "phone";
     public static  final  String KEY_PASSWORD = "password";
     public static  final  String KEY_PREFERENCE_NAME = "foodorderAppPreferencce";
     public static  final  String KEY_IS_LOGINED_IN = "isLoginedIn";

@@ -65,4 +65,5 @@ public class UserActivity extends AppCompatActivity {
         binding.txtuser.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
 
     }
+
 }
