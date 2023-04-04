@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,39 +14,61 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodOrderApp"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.admin.OrderManagerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.admin.UserManagerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.admin.FoodManagerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.admin.AdminActivity"
+            android:exported="false" />
 
-        <activity android:name=".activities.RegisterActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activities.AccountActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activities.AddressActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activities.CheckoutActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activities.DetailActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activities.AccountActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activities.AddressActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activities.CheckoutActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activities.DetailActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activities.OrderActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activities.SupportActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activities.UserActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activities.LoginActivity"
 
-        <activity android:name=".activities.OrderActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activities.SupportActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activities.UserActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activities.LoginActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".activities.MainActivity"/>
+        <activity android:name=".activities.MainActivity" />
+
         <service
             android:name=".firebase.MessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
     </application>
