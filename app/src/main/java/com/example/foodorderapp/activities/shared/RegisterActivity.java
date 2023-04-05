@@ -1,12 +1,12 @@
-package com.example.foodorderapp.activities;
+package com.example.foodorderapp.activities.shared;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.foodorderapp.activities.user.MainActivity;
 import com.example.foodorderapp.databinding.ActivityRegisterBinding;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;

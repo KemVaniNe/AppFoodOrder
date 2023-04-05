@@ -1,11 +1,11 @@
-package com.example.foodorderapp.activities;
+package com.example.foodorderapp.activities.user;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.foodorderapp.R;
+import com.example.foodorderapp.activities.shared.AccountActivity;
 import com.example.foodorderapp.databinding.ActivityUserBinding;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;

@@ -25,36 +25,36 @@
             android:name=".activities.admin.FoodManagerActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.admin.AdminActivity"
+            android:name=".activities.shared.LoginActivity"
             android:exported="false" />
 
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name=".activities.shared.RegisterActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.AccountActivity"
+            android:name=".activities.shared.AccountActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.AddressActivity"
+            android:name=".activities.user.AddressActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.CheckoutActivity"
+            android:name=".activities.user.CheckoutActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.DetailActivity"
+            android:name=".activities.user.DetailActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.OrderActivity"
+            android:name=".activities.user.OrderActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.SupportActivity"
+            android:name=".activities.user.SupportActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.UserActivity"
+            android:name=".activities.user.UserActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.LoginActivity"
 
+            android:name=".activities.admin.AdminActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -63,7 +63,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.user.MainActivity" />
 
         <service
             android:name=".firebase.MessagingService"

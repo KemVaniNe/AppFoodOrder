@@ -1,4 +1,4 @@
-package com.example.foodorderapp.activities;
+package com.example.foodorderapp.activities.shared;
 
 import androidx.appcompat.app.AppCompatActivity;
 

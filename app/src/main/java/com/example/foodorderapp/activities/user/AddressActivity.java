@@ -1,15 +1,16 @@
-package com.example.foodorderapp.activities;
+package com.example.foodorderapp.activities.user;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
 import com.example.foodorderapp.R;
 
-public class OrderActivity extends AppCompatActivity {
+public class AddressActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order);
+        setContentView(R.layout.activity_address);
     }
 }

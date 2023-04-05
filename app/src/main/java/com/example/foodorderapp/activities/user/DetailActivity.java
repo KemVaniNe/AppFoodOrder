@@ -1,4 +1,4 @@
-package com.example.foodorderapp.activities;
+package com.example.foodorderapp.activities.user;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;

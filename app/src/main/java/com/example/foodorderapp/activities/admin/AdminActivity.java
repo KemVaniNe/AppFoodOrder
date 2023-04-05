@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.foodorderapp.activities.LoginActivity;
+import com.example.foodorderapp.activities.shared.LoginActivity;
 import com.example.foodorderapp.databinding.ActivityAdminBinding;
 import com.example.foodorderapp.utilities.PreferenceManeger;
 

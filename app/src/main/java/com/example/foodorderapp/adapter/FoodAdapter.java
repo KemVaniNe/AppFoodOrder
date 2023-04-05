@@ -1,19 +1,17 @@
 package com.example.foodorderapp.adapter;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodorderapp.activities.DetailActivity;
+import com.example.foodorderapp.activities.user.DetailActivity;
 import com.example.foodorderapp.databinding.ActivityDetailBinding;
 import com.example.foodorderapp.databinding.ViewholderFoodBinding;
 import com.example.foodorderapp.model.FoodModel;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodorderapp.activities.DetailActivity;
+import com.example.foodorderapp.activities.user.DetailActivity;
 import com.example.foodorderapp.databinding.ActivityDetailBinding;
 import com.example.foodorderapp.databinding.ViewholderFoodAdminBinding;
 import com.example.foodorderapp.databinding.ViewholderFoodBinding;
