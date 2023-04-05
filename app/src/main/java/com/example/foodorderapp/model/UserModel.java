@@ -5,6 +5,10 @@ public class UserModel {
     private String name;
     private String pass;
 
+    public UserModel(){
+
+    }
+
     public UserModel(String name, String pass) {
         this.name = name;
         this.pass = pass;

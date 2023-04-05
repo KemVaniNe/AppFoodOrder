@@ -2,6 +2,7 @@ package com.example.foodorderapp.activities.admin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -20,5 +21,13 @@ public class OrderManagerActivity extends AppCompatActivity {
         View viewRoot = binding.getRoot();
         setContentView(viewRoot);
         preferenceManeger = new PreferenceManeger(getApplicationContext());
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OrderManagerActivity.this, AdminActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
     }
 }
