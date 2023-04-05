@@ -54,7 +54,6 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.shared.LoginActivity"
-
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
