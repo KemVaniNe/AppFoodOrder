@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+
     android:layout_height="125dp"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="15dp"
     app:cardElevation="130dp"
     android:elevation="20dp"
     android:layout_margin="5dp"
     app:cardBackgroundColor="#C9C9CA">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
+
 
 
 
@@ -28,6 +30,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="20dp">
 
+
         </TextView>
 
         <TextView
@@ -42,6 +45,7 @@
             android:layout_marginLeft="140dp"
             android:layout_marginTop="15dp">
 
+
         </TextView>
 
         <TextView
@@ -51,6 +55,7 @@
             android:layout_marginLeft="140dp"
             android:layout_marginTop="50dp"
             android:gravity="center"
+
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold">
@@ -112,6 +117,7 @@
             android:text="View"
             android:layout_marginTop="10dp"
             android:layout_marginStart="260dp"
+
             >
         </Button>
 

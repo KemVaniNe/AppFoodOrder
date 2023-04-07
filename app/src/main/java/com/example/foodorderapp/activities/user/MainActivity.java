@@ -1,4 +1,4 @@
-package com.example.foodorderapp.activities;
+package com.example.foodorderapp.activities.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.foodorderapp.adapter.CatetoryAdapter;
+
 import com.example.foodorderapp.adapter.FoodAdapter;
 import com.example.foodorderapp.databinding.ActivityMainBinding;
 import com.example.foodorderapp.listener.CategoryListener;
@@ -17,6 +18,7 @@ import com.example.foodorderapp.model.CategoryModel;
 import com.example.foodorderapp.model.FoodModel;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                     }
                 });
   }
+
     private void recyclerViewCategory(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         binding.recyclerview.setLayoutManager(linearLayoutManager);
@@ -107,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                     }
                 });
     }
+
     private void setListener(){
         binding.imageLogOut.setOnClickListener(v->Logout());
         binding.btnUser.setOnClickListener(new View.OnClickListener() {

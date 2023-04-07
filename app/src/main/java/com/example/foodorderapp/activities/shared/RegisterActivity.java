@@ -1,9 +1,8 @@
-package com.example.foodorderapp.activities;
+package com.example.foodorderapp.activities.shared;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,6 +13,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.widget.Toast;
 
+import com.example.foodorderapp.activities.user.MainActivity;
 import com.example.foodorderapp.databinding.ActivityRegisterBinding;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
@@ -57,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         HashMap<String , Object> user = new HashMap<>();
         user.put(Contants.KEY_USERNAME, binding.etUsername.getText().toString());
+        user.put(Contants.KEY_PHONE, binding.etUsername2.getText().toString());
         user.put(Contants.KEY_PASSWORD, binding.etPassword.getText().toString());
         database.collection((Contants.KEY_COLEECTION_USERS))
                 .add(user)
@@ -64,23 +65,27 @@ public class RegisterActivity extends AppCompatActivity {
                     preferenceManeger.putBoolean(Contants.KEY_IS_LOGINED_IN, true);
                     preferenceManeger.putString(Contants.KEY_USER_ID,documentReference.getId() );
                     preferenceManeger.putString(Contants.KEY_USERNAME , binding.etUsername.getText().toString());
+                    preferenceManeger.putString(Contants.KEY_PHONE , binding.etUsername2.getText().toString());
                     preferenceManeger.putString(Contants.KEY_PASSWORD, binding.etPassword.getText().toString());
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-
                 })
                 .addOnFailureListener(exception->{
                     showToast("Đăng ký thất bại");
                 });
     }
+<<<<<<< HEAD:app/src/main/java/com/example/foodorderapp/activities/RegisterActivity.java
 
+=======
+//
+>>>>>>> 322c4dd33465d6ee0bcb17b5f2c39d05edee84eb:app/src/main/java/com/example/foodorderapp/activities/shared/RegisterActivity.java
     private Boolean isValidRegisterDetail(){
         if(binding.etUsername.getText().toString().trim().isEmpty()){
             showToast("Nhập username");
             return false;
-        }else if (!binding.etUsername2.getText().toString().equals(binding.etUsername.getText().toString())){
-            showToast("Xác nhận username sai");
+        }else if (binding.etUsername2.getText().toString().trim().isEmpty()){
+            showToast("Nhập number phone");
             return false;
         }
         else if (binding.etPassword.getText().toString().trim().isEmpty()){

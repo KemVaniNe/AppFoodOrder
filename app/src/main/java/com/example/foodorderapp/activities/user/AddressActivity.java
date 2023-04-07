@@ -1,4 +1,4 @@
-package com.example.foodorderapp.activities;
+package com.example.foodorderapp.activities.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,7 @@ import com.example.foodorderapp.utilities.PreferenceManeger;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+
 
 public class AccountActivity extends AppCompatActivity {
     private ActivityAccountBinding binding;
@@ -84,5 +85,5 @@ public class AccountActivity extends AppCompatActivity {
                 }
             }
         });
-    }
+   }
 }

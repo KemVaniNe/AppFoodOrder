@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.user.UserActivity"
+    tools:context=".activities.admin.AdminActivity"
     android:background="@drawable/background">
 
     <LinearLayout
@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="User name"
+                android:text="Admin"
                 android:textColor="@color/white"
                 android:textSize="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -48,13 +48,13 @@
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:background="@drawable/look"
-            android:id="@+id/btn_donHang">
+            android:id="@+id/btn_quanLyMonAn">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:text="Đơn hàng"
+                android:text="Quản lý món ăn"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ig_donHang"
@@ -79,13 +79,13 @@
             android:background="@drawable/look"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/btn_diaChi">
+            android:id="@+id/btn_quanLyNhanVien">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:text="Địa chỉ giao hàng"
+                android:text="Quản lý nhân viên"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ig_diaChi"
@@ -100,7 +100,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/address" />
+                app:srcCompat="@drawable/baseline_supervisor_account_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -108,13 +108,13 @@
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:background="@drawable/look"
-            android:id="@+id/btn_hoTro">
+            android:id="@+id/btn_quanLyHoaDon">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:text="Hỗ trợ"
+                android:text="Quản lý hóa đơn"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ig_hoTro"
@@ -129,7 +129,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/customer_support" />
+                app:srcCompat="@drawable/baseline_shopping_cart_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -158,7 +158,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/settings" />
+                app:srcCompat="@drawable/baseline_person_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -167,18 +167,18 @@
             android:layout_margin="5dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/look"
-            android:id="@+id/btn_back">
+            android:id="@+id/btn_dangXuat">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:text="Trở về"
+                android:layout_marginStart="28dp"
+                android:text="Đăng xuất"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ig_back"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.506" />
+                app:layout_constraintVertical_bias="0.515" />
 
             <ImageView
                 android:id="@+id/ig_back"
@@ -188,8 +188,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/backward" />
+                app:srcCompat="@drawable/ic_logout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

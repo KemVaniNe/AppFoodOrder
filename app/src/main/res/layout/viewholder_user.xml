@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="30dp">
+
+    <TextView
+        android:id="@+id/tv_nameUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:textSize="25dp"
+        android:layout_marginBottom="15dp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_passUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pass"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="35dp"
+        android:textSize="25dp"/>
+
+</LinearLayout>

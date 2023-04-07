@@ -1,23 +1,19 @@
-package com.example.foodorderapp.activities;
+package com.example.foodorderapp.activities.shared;
 
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 
+import com.example.foodorderapp.activities.user.MainActivity;
 import com.example.foodorderapp.databinding.ActivityLoginBinding;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -44,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         binding.btnRegister.setOnClickListener(v->
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class))
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class))
             );
     }
     private void Login(){

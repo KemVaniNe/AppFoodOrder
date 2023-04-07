@@ -1,11 +1,15 @@
 package com.example.foodorderapp.adapter;
 
+
 import android.content.Intent;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.LayoutInflater;
+
 import android.view.View;
+
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -24,6 +28,7 @@ import com.example.foodorderapp.model.FoodOrderModel;
 import java.util.List;
 
 public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.CartViewHolder>{
+
     private  final List<FoodOrderModel> foodOrderModels;
     private  final OrderAddorSubListener listener ;
     private int totalprice;
@@ -33,22 +38,27 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.CartViewHolde
         this.foodOrderModels = foodOrderModels;
         this.listener = listener;
         this.totalprice = totalprice;
-    }
 
     @NonNull
     @Override
     public CartAdapter.CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         ViewholderCartBinding activityDetailBinding = ViewholderCartBinding.inflate(
+
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false
         );
+
         return new CartViewHolder(activityDetailBinding);
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.CartViewHolder holder, int position) {
+
         holder.setFooddata(foodOrderModels.get(position));
+
     }
 
     @Override
@@ -93,6 +103,7 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.CartViewHolde
                 binding.tvNumber.setText(String.valueOf(number));
                 listener.AddorSubClick(totalprice + price , number,foodOrderModel.getId());
             });
+
         }
     }
     private Bitmap getCartImage(String encodeImage){

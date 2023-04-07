@@ -6,13 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderapp.activities.DetailActivity;
+
 import com.example.foodorderapp.databinding.ViewholderFoodBinding;
 import com.example.foodorderapp.listener.FoodListener;
 import com.example.foodorderapp.model.FoodModel;
@@ -24,7 +24,9 @@ public class FoodAdapter extends  RecyclerView.Adapter<FoodAdapter.FoodViewHolde
     private  final List<FoodModel> foodModels;
     private final FoodListener listener;
 
+
     public FoodAdapter(List<FoodModel> foodModels, FoodListener listener) {
+
         this.foodModels = foodModels;
         this.listener = listener;
     }
@@ -43,9 +45,10 @@ public class FoodAdapter extends  RecyclerView.Adapter<FoodAdapter.FoodViewHolde
     @Override
     public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
         holder.setFooddata(foodModels.get(position));
-        
-    }
 
+        
+
+    }
     @Override
     public int getItemCount() {
         return foodModels.size();
@@ -56,6 +59,7 @@ public class FoodAdapter extends  RecyclerView.Adapter<FoodAdapter.FoodViewHolde
         FoodViewHolder(@NonNull ViewholderFoodBinding viewholderFoodBinding) {
             super(viewholderFoodBinding.getRoot());
             binding = viewholderFoodBinding;
+
         }
         void setFooddata(FoodModel food){
             binding.name.setText(food.getName());
@@ -67,8 +71,11 @@ public class FoodAdapter extends  RecyclerView.Adapter<FoodAdapter.FoodViewHolde
 
     }
 
+
+    
     private Bitmap getFoodImage(String encodeImage){
         byte[] bytes = Base64.decode(encodeImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
     }
+
 }

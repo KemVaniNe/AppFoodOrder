@@ -28,6 +28,7 @@
 
         <TextView
             android:id="@+id/tv_nameFood"
+
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:gravity="center"

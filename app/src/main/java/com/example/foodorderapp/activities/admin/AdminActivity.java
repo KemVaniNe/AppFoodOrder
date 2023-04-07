@@ -1,68 +1,63 @@
-package com.example.foodorderapp.activities;
+package com.example.foodorderapp.activities.admin;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.foodorderapp.R;
-import com.example.foodorderapp.databinding.ActivityUserBinding;
-import com.example.foodorderapp.utilities.Contants;
+import com.example.foodorderapp.activities.shared.AccountManagerActivity;
+import com.example.foodorderapp.activities.shared.LoginActivity;
+import com.example.foodorderapp.databinding.ActivityAdminBinding;
 import com.example.foodorderapp.utilities.PreferenceManeger;
 
-public class UserActivity extends AppCompatActivity {
-    private ActivityUserBinding binding;
-
+public class AdminActivity extends AppCompatActivity {
+    private ActivityAdminBinding binding;
     private PreferenceManeger preferenceManeger;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityUserBinding.inflate(getLayoutInflater());
+        binding = ActivityAdminBinding.inflate(getLayoutInflater());
         View viewRoot = binding.getRoot();
         setContentView(viewRoot);
         preferenceManeger = new PreferenceManeger(getApplicationContext());
-        loadUserDetails();
 
-        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+        binding.btnDangXuat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UserActivity.this, MainActivity.class);
+                Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+        binding.btnQuanLyMonAn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, FoodManagerActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
 
-        binding.btnHoTro.setOnClickListener(new View.OnClickListener() {
+        binding.btnQuanLyHoaDon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UserActivity.this, SupportActivity.class);
+                Intent intent = new Intent(AdminActivity.this, OrderManagerActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
-        binding.btnDiaChi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UserActivity.this, AddressActivity.class);
-                startActivityForResult(intent, 1);
-            }
-        });
+
         binding.btnQuanLyTaiKhoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UserActivity.this, AccountActivity.class);
+                Intent intent = new Intent(AdminActivity.this, AccountManagerActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
-        binding.btnDonHang.setOnClickListener(new View.OnClickListener() {
+        binding.btnQuanLyNhanVien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UserActivity.this, OrderActivity.class);
+                Intent intent = new Intent(AdminActivity.this, UserManagerActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
-    }
-
-    private void loadUserDetails(){
-        binding.txtuser.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
-
     }
 }

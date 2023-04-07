@@ -7,7 +7,7 @@
     android:background="@drawable/background"
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
-    tools:context=".activities.RegisterActivity">
+    tools:context=".activities.shared.RegisterActivity">
 
     <EditText
         android:id="@+id/et_username"
@@ -41,7 +41,7 @@
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Username"
+        android:hint="Phone Number"
         android:inputType="textPersonName"
         android:paddingStart="20dp"
         android:paddingLeft="10dp"
