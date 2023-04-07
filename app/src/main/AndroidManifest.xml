@@ -27,8 +27,7 @@
             android:name=".activities.admin.FoodManagerActivity"
             android:exported="false" />
         <activity
-
-            android:name=".activities.shared.LoginActivity"
+            android:name=".activities.admin.AdminActivity"
             android:exported="false" />
         <activity
             android:name=".activities.shared.RegisterActivity"
@@ -55,7 +54,7 @@
             android:name=".activities.user.UserActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.admin.AdminActivity"
+            android:name=".activities.shared.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
