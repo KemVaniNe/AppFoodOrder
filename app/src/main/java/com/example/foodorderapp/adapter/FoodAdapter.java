@@ -1,6 +1,7 @@
 package com.example.foodorderapp.adapter;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -11,7 +12,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderapp.activities.DetailActivity;
 import com.example.foodorderapp.databinding.ViewholderFoodBinding;
+import com.example.foodorderapp.listener.FoodListener;
 import com.example.foodorderapp.model.FoodModel;
 
 import java.util.List;
@@ -19,9 +22,11 @@ import java.util.List;
 
 public class FoodAdapter extends  RecyclerView.Adapter<FoodAdapter.FoodViewHolder>{
     private  final List<FoodModel> foodModels;
+    private final FoodListener listener;
 
-    public FoodAdapter(List<FoodModel> foodModels) {
+    public FoodAdapter(List<FoodModel> foodModels, FoodListener listener) {
         this.foodModels = foodModels;
+        this.listener = listener;
     }
 
     @NonNull
@@ -38,6 +43,7 @@ public class FoodAdapter extends  RecyclerView.Adapter<FoodAdapter.FoodViewHolde
     @Override
     public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
         holder.setFooddata(foodModels.get(position));
+        
     }
 
     @Override
@@ -55,7 +61,10 @@ public class FoodAdapter extends  RecyclerView.Adapter<FoodAdapter.FoodViewHolde
             binding.name.setText(food.getName());
             binding.price.setText(food.getPrice());
             binding.imagefood.setImageBitmap(getFoodImage(food.getImage()));
+            binding.btAdd.setOnClickListener(v->listener.FoodItemCLick(food));
+            binding.imagefood.setOnClickListener(v->listener.FoodItemDetailClick(food));
         }
+
     }
 
     private Bitmap getFoodImage(String encodeImage){

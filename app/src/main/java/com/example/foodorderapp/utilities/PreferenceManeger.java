@@ -22,7 +22,11 @@ public class PreferenceManeger {
         editor.putString(key,value);
         editor.apply();
     }
-
+    public void Remove(String Key){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(Key);
+        editor.apply();
+    }
     public String getSrting(String key){
         return sharedPreferences.getString(key, null);
     }

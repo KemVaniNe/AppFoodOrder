@@ -1,10 +1,22 @@
 package com.example.foodorderapp.model;
-
-public class FoodModel {
+import java.io.Serializable;
+public class FoodModel implements Serializable{
+    private  String id_food;
     private String name;
     private String image;
     private String price;
+
+
+
     private String detail;
+
+    public String getId_food() {
+        return id_food;
+    }
+
+    public void setId_food(String id_food) {
+        this.id_food = id_food;
+    }
 
     public String getName() {
         return name;

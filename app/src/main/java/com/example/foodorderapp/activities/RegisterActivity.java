@@ -1,10 +1,17 @@
 package com.example.foodorderapp.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.widget.Toast;
 
 import com.example.foodorderapp.databinding.ActivityRegisterBinding;
@@ -12,11 +19,15 @@ import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
     ActivityRegisterBinding binding;
     private PreferenceManeger preferenceManeger;
+    private  String encodedImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +38,16 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void SetListener(){
         binding.tvSignin.setOnClickListener(v->onBackPressed());
+//        binding.tvSignin.setOnClickListener(v->{
+//            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            pickImage.launch(intent);
+//        });
         binding.tvRegiter.setOnClickListener(v->{
             if(isValidRegisterDetail()){
                 Register();
             }
-
+           // addfood();
         });
     }
     private void showToast(String message){
@@ -58,23 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
                     showToast("Đăng ký thất bại");
                 });
     }
-//    private void addfood(){
-//        FirebaseFirestore database = FirebaseFirestore.getInstance();
-//        HashMap<String , Object> food = new HashMap<>();
-//        food.put(Contants.KEY_NAME_FOOD,"Cơm cuộn chiên xù" );
-//        food.put(Contants.KEY_PRICE_FOOD,"35.000" );
-//        food.put(Contants.KEY_DETAIL_FOOD,"Cơm, đồ trộn" );
-//        food.put(Contants.KEY_IMAGE_FOOD, "https://lh3.googleusercontent.com/pw/AMWts8DMvxewerN9npJq8Mteyb9yY5RFpODuhy45wVeiQbEhUeRAwXeHzCpl6Zo9ACCPxPARkKIN9xSGVzjOszVnND9Sqcl0j-YoysScAIKhZAWPI6NEKHvRuh8m8dv8NSGRsZxz8o0xv2tzAQyh0K-zIzqXd7XRuA6ko0eSpY1ymFhuziWf-v2PljQ5wvXjl9YfUccwcTMFssUbdHPnq3OH2_GmyUlSZajSX9kYEW1pRfXcfuAxpXfthEcyJt0vPGQ8JupUbJLkENj-yBtSk9vQBjcM45hOUh6NDaTFEReyE7fZVYnPipZTCfsBJB_APc3bwfVHk9PrpiBtZmwRRpcpIz65ZPSIOAGpUdQflwBy77N4_9h9VzNgtQesmVeXuyQGvBLW_LckXRxYtmQigTL2ySbIYL_OSnV9t-_DvX7oHNBXrKZQYHfNL7i_sirTkLzWpmBNhziFV_dsglCG815O2pmGf_0eDK8uT4r81Mg6v3s5aT3wYgGkOyMJxGeh-kmtBxTKpcFNZsIMoyepJlfNFDvBVqv-uTLtOwr4j9VLHxJlllCMpvLLGkZF6o4NA8sgd9fyBvjPNDkpbO211kMiJBNFBWO69d19uLQ7AV6CvYomxQrpAlAyid9dxJftUt-XABMLfWP1DtvWEAMIrIbC4meSyBtobLfJIbwmbkcNcRVHbWPOfli22EXIg-oDjFnwIKqskzgBLcizIuoQVd2rVYLWBTFKek2S4qtH0IS9_IFLmvotZfOEwDWOzJLIIAvnIRV0lHGCx5jVf_8UoysrB5778pca9NmS5iCYeImKnp6eEFiryKa4ZhLFXI_uq3mpbvYuzluXuuo9uyWb7aNcLTsg0natDPnlTllEbEdqtBot3HmZzslesAw0NrMbeaa6_1XBGBQfSLOrYhkn4rFjDA=w730-h520-s-no?authuser=0");
-//        database.collection((Contants.KEY_COLEECTION_FOODS))
-//                .add(food)
-//                .addOnSuccessListener(documentReference -> {
-//
-//
-//                })
-//                .addOnFailureListener(exception->{
-//                    showToast("Đăng ký thất bại");
-//                });
-//    }
+
     private Boolean isValidRegisterDetail(){
         if(binding.etUsername.getText().toString().trim().isEmpty()){
             showToast("Nhập username");
@@ -93,4 +93,71 @@ public class RegisterActivity extends AppCompatActivity {
             return true;
         }
     }
+
+//    private void addfood(){
+//
+//        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//        HashMap<String , Object> food = new HashMap<>();
+//        food.put(Contants.KEY_NAME_FOOD,binding.etUsername.getText().toString());
+//        food.put(Contants.KEY_PRICE_FOOD,binding.etUsername2.getText().toString() );
+//        food.put(Contants.KEY_DETAIL_FOOD,binding.etPassword.getText().toString() );
+//        food.put(Contants.KEY_ID_FOOD, binding.etPassword2.getText().toString());
+//        food.put(Contants.KEY_IMAGE_FOOD,encodedImage );
+//        database.collection((Contants.KEY_COLEECTION_FOODS))
+//                .add(food)
+//                .addOnSuccessListener(documentReference -> {
+//                    showToast("Đăng ký thành công");
+//
+//                })
+//                .addOnFailureListener(exception->{
+//                    showToast("Đăng ký thất bại");
+//                });
+//    }
+//
+//
+//    private void addCategory(){
+//
+//        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//        HashMap<String , Object> food = new HashMap<>();
+//        food.put(Contants.KEY_NAME_CATEGORY,binding.etUsername.getText().toString());
+//        food.put(Contants.KEY_ID_CATEGORY,binding.etUsername2.getText().toString() );
+//        food.put(Contants.KEY_IMAGE_CATEGORY,encodedImage );
+//        database.collection((Contants.KEY_COLEECTION_CATEGORY))
+//                .add(food)
+//                .addOnSuccessListener(documentReference -> {
+//                    showToast("Đăng ký thành công");
+//
+//                })
+//                .addOnFailureListener(exception->{
+//                    showToast("Đăng ký thất bại");
+//                });
+//    }
+//
+//    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+//            new ActivityResultContracts.StartActivityForResult(),
+//            result -> {
+//                if(result.getResultCode() == RESULT_OK) {
+//                    if(result.getData() != null) {
+//                        Uri imageUri = result.getData().getData();
+//                        try{
+//                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+//                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//                            encodedImage = encodedImage(bitmap);
+//                        }catch (FileNotFoundException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }
+//    );
+//
+//    private  String encodedImage(Bitmap bitmap){
+//        int previewWidth = 150;
+//        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
+//        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+//        byte[] bytes = byteArrayOutputStream.toByteArray();
+//        return Base64.encodeToString(bytes, Base64.DEFAULT);
+//    }
 }
