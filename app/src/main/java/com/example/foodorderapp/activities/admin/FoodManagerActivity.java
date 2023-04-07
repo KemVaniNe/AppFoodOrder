@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.foodorderapp.R;
 import com.example.foodorderapp.adapter.CategoryAdapter;
 import com.example.foodorderapp.adapter.FoodAdapter;
 import com.example.foodorderapp.adapter.FoodAdminAdapter;
@@ -23,6 +24,8 @@ import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -35,6 +38,8 @@ public class FoodManagerActivity extends AppCompatActivity {
 
     private CategoryAdapter adapter;
     private FoodAdminAdapter foodAdminAdapter;
+    private FirebaseAuth mAuth;
+    private DatabaseReference myRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,26 +103,28 @@ public class FoodManagerActivity extends AppCompatActivity {
     }
 
     public void addFood(){
-   /*     AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         binding = ActivityFoodManagerBinding.inflate(getLayoutInflater());
-        View mView = inflater.inflate(R.layout.add_note, null);
+        View mView = inflater.inflate(R.layout.add_food, null);
         mDialog.setView(mView);
 
         AlertDialog dialog = mDialog.create();
         dialog.setCancelable(true);
 
         Button save = mView.findViewById(R.id.btn_save);
-        EditText edtTitle = mView.findViewById(R.id.edt_title);
-        EditText edtContent = mView.findViewById(R.id.edt_content);
+        EditText edtName = mView.findViewById(R.id.edt_name);
+        EditText edtPrice = mView.findViewById(R.id.edt_price);
+        EditText edtDetail = mView.findViewById(R.id.edt_detail);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String id = myRef.push().getKey();
-                String title = edtTitle.getText().toString();
-                String content = edtContent.getText().toString();
-                myRef.child(id).setValue(new Post(id,title,content, getRandomColor()))
+                String name = edtDetail.getText().toString();
+                String price = edtPrice.getText().toString();
+                String detail = edtDetail.getText().toString();
+            /*    myRef.child(id).setValue(new Post(id,title,content, getRandomColor()))
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -129,16 +136,51 @@ public class FoodManagerActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(),"Add note fail!",Toast.LENGTH_SHORT).show();
                                 }
                             }
-                        });
+                        });*/
 
                 dialog.dismiss();
             }
         });
 
-        dialog.show();*/
+        dialog.show();
     }
 
     public void addCategory(){
+        AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        binding = ActivityFoodManagerBinding.inflate(getLayoutInflater());
+        View mView = inflater.inflate(R.layout.add_category, null);
+        mDialog.setView(mView);
 
+        AlertDialog dialog = mDialog.create();
+        dialog.setCancelable(true);
+
+        Button save = mView.findViewById(R.id.btn_save);
+        EditText edtName = mView.findViewById(R.id.edt_name);
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = myRef.push().getKey();
+                String name = edtName.getText().toString();
+            /*    myRef.child(id).setValue(new Post(id,title,content, getRandomColor()))
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(getApplicationContext(),"Add note successful!",Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    Toast.makeText(getApplicationContext(),"Add note fail!",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });*/
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }

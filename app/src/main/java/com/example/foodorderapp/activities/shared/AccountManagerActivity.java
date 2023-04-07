@@ -28,7 +28,6 @@ public class AccountManagerActivity extends AppCompatActivity {
     private ActivityAccountManagerBinding binding;
     private PreferenceManeger preferenceManeger;
 
-    private FirebaseAuth mAuth;
     private DatabaseReference myRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
