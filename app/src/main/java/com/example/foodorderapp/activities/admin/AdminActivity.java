@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.foodorderapp.activities.shared.AccountManagerActivity;
 import com.example.foodorderapp.activities.shared.LoginActivity;
 import com.example.foodorderapp.databinding.ActivityAdminBinding;
 import com.example.foodorderapp.utilities.PreferenceManeger;
@@ -44,13 +45,13 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
-    /*    binding.btnQuanLyTaiKhoan.setOnClickListener(new View.OnClickListener() {
+        binding.btnQuanLyTaiKhoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AdminActivity.this, AccountManagerActivity.class);
                 startActivityForResult(intent, 1);
             }
-        });*/
+        });
         binding.btnQuanLyNhanVien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
