@@ -7,13 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Toast;
 
- import com.example.foodorderapp.R;
-import com.example.foodorderapp.adapter.CartAdapter;
-import com.example.foodorderapp.adapter.FoodAdapter;
-import com.example.foodorderapp.databinding.ActivityCheckoutBinding;
+ import com.example.foodorderapp.adapter.CartAdapter;
+ import com.example.foodorderapp.databinding.ActivityCheckoutBinding;
 import com.example.foodorderapp.listener.OrderAddorSubListener;
-import com.example.foodorderapp.model.FoodModel;
-import com.example.foodorderapp.model.FoodOrderModel;
+ import com.example.foodorderapp.model.FoodOrderModel;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
 import com.google.firebase.firestore.DocumentReference;

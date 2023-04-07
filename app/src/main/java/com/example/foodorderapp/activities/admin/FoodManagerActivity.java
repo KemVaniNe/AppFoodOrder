@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.foodorderapp.R;
-import com.example.foodorderapp.adapter.CategoryAdapter;
+import com.example.foodorderapp.adapter.CatetoryAdapter;
 import com.example.foodorderapp.adapter.FoodAdapter;
 import com.example.foodorderapp.adapter.FoodAdminAdapter;
 import com.example.foodorderapp.databinding.ActivityAdminBinding;
@@ -36,7 +36,7 @@ public class FoodManagerActivity extends AppCompatActivity {
     private ActivityFoodManagerBinding binding;
     private PreferenceManeger preferenceManeger;
 
-    private CategoryAdapter adapter;
+    private CatetoryAdapter adapter;
     private FoodAdminAdapter foodAdminAdapter;
     private FirebaseAuth mAuth;
     private DatabaseReference myRef;

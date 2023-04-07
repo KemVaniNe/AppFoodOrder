@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodorderapp.activities.DetailActivity;
+import com.example.foodorderapp.activities.user.DetailActivity;
 
 import com.example.foodorderapp.databinding.ViewholderFoodBinding;
 import com.example.foodorderapp.listener.FoodListener;

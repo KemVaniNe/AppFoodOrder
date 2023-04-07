@@ -75,12 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
                     showToast("Đăng ký thất bại");
                 });
     }
-<<<<<<< HEAD:app/src/main/java/com/example/foodorderapp/activities/RegisterActivity.java
-
-=======
-//
->>>>>>> 322c4dd33465d6ee0bcb17b5f2c39d05edee84eb:app/src/main/java/com/example/foodorderapp/activities/shared/RegisterActivity.java
-    private Boolean isValidRegisterDetail(){
+  private Boolean isValidRegisterDetail(){
         if(binding.etUsername.getText().toString().trim().isEmpty()){
             showToast("Nhập username");
             return false;

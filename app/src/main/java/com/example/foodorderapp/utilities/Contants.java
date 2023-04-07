@@ -7,7 +7,6 @@ public class Contants {
     public static final String KEY_EMAIL = "email";
     public static  final  String KEY_PHONE = "phone";
     public static  final  String KEY_PASSWORD = "password";
-    public static  final  String KEY_PHONE = "phone";
     public static  final  String KEY_PREFERENCE_NAME = "foodorderAppPreferencce";
     public static  final  String KEY_IS_LOGINED_IN = "isLoginedIn";
     public static  final  String KEY_FCM_TOKEN = "fcmToken";

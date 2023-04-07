@@ -1,15 +1,21 @@
 package com.example.foodorderapp.activities.user;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.foodorderapp.R;
 import com.example.foodorderapp.databinding.ActivityDetailBinding;
+import com.example.foodorderapp.model.FoodModel;
+import com.example.foodorderapp.utilities.Contants;
+import com.example.foodorderapp.utilities.PreferenceManeger;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.HashMap;
 
 public class DetailActivity extends AppCompatActivity {
   ActivityDetailBinding binding;

@@ -1,23 +1,19 @@
 package com.example.foodorderapp.adapter;
 
-
 import android.content.Intent;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.LayoutInflater;
-
 import android.view.View;
-
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodorderapp.activities.CheckoutActivity;
-import com.example.foodorderapp.activities.DetailActivity;
-import com.example.foodorderapp.activities.UserActivity;
+import com.example.foodorderapp.activities.user.CheckoutActivity;
+import com.example.foodorderapp.activities.user.DetailActivity;
+import com.example.foodorderapp.activities.user.UserActivity;
 import com.example.foodorderapp.databinding.ActivityCheckoutBinding;
 import com.example.foodorderapp.databinding.ActivityDetailBinding;
 import com.example.foodorderapp.databinding.ViewholderCartBinding;
@@ -28,7 +24,6 @@ import com.example.foodorderapp.model.FoodOrderModel;
 import java.util.List;
 
 public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.CartViewHolder>{
-
     private  final List<FoodOrderModel> foodOrderModels;
     private  final OrderAddorSubListener listener ;
     private int totalprice;
@@ -38,27 +33,22 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.CartViewHolde
         this.foodOrderModels = foodOrderModels;
         this.listener = listener;
         this.totalprice = totalprice;
+    }
 
     @NonNull
     @Override
     public CartAdapter.CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         ViewholderCartBinding activityDetailBinding = ViewholderCartBinding.inflate(
-
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false
         );
-
         return new CartViewHolder(activityDetailBinding);
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.CartViewHolder holder, int position) {
-
         holder.setFooddata(foodOrderModels.get(position));
-
     }
 
     @Override
@@ -103,7 +93,6 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.CartViewHolde
                 binding.tvNumber.setText(String.valueOf(number));
                 listener.AddorSubClick(totalprice + price , number,foodOrderModel.getId());
             });
-
         }
     }
     private Bitmap getCartImage(String encodeImage){

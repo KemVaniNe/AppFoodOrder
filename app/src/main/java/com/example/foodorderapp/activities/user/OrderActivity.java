@@ -1,4 +1,4 @@
- package com.example.foodorderapp.activities;
+ package com.example.foodorderapp.activities.user;
 import androidx.annotation.NonNull;
  import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Toast;
 
  import com.example.foodorderapp.R;
-import com.example.foodorderapp.adapter.CartAdapter;
 import com.example.foodorderapp.adapter.DetailHistoryAdapter;
 import com.example.foodorderapp.adapter.HistoryAdapter;
 import com.example.foodorderapp.databinding.ActivityOrderBinding;
