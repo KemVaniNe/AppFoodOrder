@@ -69,8 +69,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                             foodModel.setPrice(queryDocumentSnapshot.getString(Contants.KEY_PRICE_FOOD));
                             foodModel.setImage(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_FOOD));
                             foodModel.setDetail(queryDocumentSnapshot.getString(Contants.KEY_DETAIL_FOOD));
-                            foodModels.add(foodModel);
-                        }
+                            foodModels.add(foodModel);}
                         if(foodModels.size() >0){
                             foodAdapter = new FoodAdapter(foodModels,this);
                             binding.recyclerviewfood.setAdapter(foodAdapter);

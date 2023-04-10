@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.foodorderapp.R;
+import com.example.foodorderapp.activities.admin.AdminActivity;
+import com.example.foodorderapp.activities.admin.FoodManagerActivity;
 import com.example.foodorderapp.databinding.ActivityAccountManagerBinding;
 import com.example.foodorderapp.databinding.ActivityUserManagerBinding;
 import com.example.foodorderapp.utilities.Contants;
@@ -48,6 +51,14 @@ public class AccountManagerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 UpdateInfor();
+            }
+        });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AccountManagerActivity.this, AdminActivity.class);
+                startActivityForResult(intent, 1);
             }
         });
     }

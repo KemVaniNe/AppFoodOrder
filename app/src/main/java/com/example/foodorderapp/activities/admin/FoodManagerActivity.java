@@ -19,6 +19,7 @@ import com.example.foodorderapp.adapter.FoodAdapter;
 import com.example.foodorderapp.adapter.FoodAdminAdapter;
 import com.example.foodorderapp.databinding.ActivityAdminBinding;
 import com.example.foodorderapp.databinding.ActivityFoodManagerBinding;
+import com.example.foodorderapp.model.CategoryModel;
 import com.example.foodorderapp.model.FoodModel;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
@@ -39,7 +40,9 @@ public class FoodManagerActivity extends AppCompatActivity {
     private CatetoryAdapter adapter;
     private FoodAdminAdapter foodAdminAdapter;
     private FirebaseAuth mAuth;
-    private DatabaseReference myRef;
+ //   private DatabaseReference myRef;
+
+    private CatetoryAdapter catetoryAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +86,7 @@ public class FoodManagerActivity extends AppCompatActivity {
                         List<FoodModel> foodModels = new ArrayList<>();
                         for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
                             FoodModel foodModel = new FoodModel();
+                            foodModel.setId_food(queryDocumentSnapshot.getId());
                             foodModel.setName(queryDocumentSnapshot.getString(Contants.KEY_NAME_FOOD));
                             foodModel.setPrice(queryDocumentSnapshot.getString(Contants.KEY_PRICE_FOOD));
                             foodModel.setImage(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_FOOD));
@@ -93,6 +97,34 @@ public class FoodManagerActivity extends AppCompatActivity {
                             foodAdminAdapter = new FoodAdminAdapter(foodModels);
                             binding.recyclerviewfood.setAdapter(foodAdminAdapter);
                             binding.recyclerviewfood.setVisibility(View.VISIBLE);
+                        }else{
+                            Toast.makeText(getApplicationContext(), "recyclerviewfood1", Toast.LENGTH_LONG);
+                        }
+                    }else{
+                        Toast.makeText(getApplicationContext(), "recyclerviewfood2", Toast.LENGTH_LONG);
+                    }
+                });
+    }
+
+    private void recyclerViewCategory(){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        binding.recyclerview.setLayoutManager(linearLayoutManager);
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection(Contants.KEY_COLEECTION_CATEGORY)
+                .get()
+                .addOnCompleteListener(task->{
+                    if(task.isSuccessful() && task.getResult() != null){
+                        List<CategoryModel> categoryModels = new ArrayList<>();
+                        for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+                            CategoryModel categoryModel = new CategoryModel();
+                            categoryModel.setId_category(Integer.parseInt(queryDocumentSnapshot.getString(Contants.KEY_ID_CATEGORY)));
+                            categoryModel.setName_category(queryDocumentSnapshot.getString(Contants.KEY_NAME_CATEGORY));
+                            categoryModel.setImage_category(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_CATEGORY));
+                            categoryModels.add(categoryModel);
+                        }
+                        if(categoryModels.size() >0){
+                       //     catetoryAdapter = new CatetoryAdapter(categoryModels,this);
+                            binding.recyclerview.setAdapter(catetoryAdapter);
                         }else{
                             Toast.makeText(getApplicationContext(), "recyclerviewfood1", Toast.LENGTH_LONG);
                         }
@@ -120,7 +152,7 @@ public class FoodManagerActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = myRef.push().getKey();
+             //   String id = myRef.push().getKey();
                 String name = edtDetail.getText().toString();
                 String price = edtPrice.getText().toString();
                 String detail = edtDetail.getText().toString();
@@ -161,7 +193,7 @@ public class FoodManagerActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = myRef.push().getKey();
+            //    String id = myRef.push().getKey();
                 String name = edtName.getText().toString();
             /*    myRef.child(id).setValue(new Post(id,title,content, getRandomColor()))
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
