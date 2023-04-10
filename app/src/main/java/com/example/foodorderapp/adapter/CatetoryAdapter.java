@@ -18,11 +18,15 @@ import java.util.List;
 
 public class CatetoryAdapter extends RecyclerView.Adapter<CatetoryAdapter.CatetoryViewHolder> {
     private List<CategoryModel> list;
-    private final CategoryListener listener;
+    private CategoryListener listener;
 
     public CatetoryAdapter(List<CategoryModel> list, CategoryListener listener) {
         this.list = list;
         this.listener = listener;
+    }
+
+    public CatetoryAdapter(List<CategoryModel> list){
+        this.list = list;
     }
 
     @NonNull
