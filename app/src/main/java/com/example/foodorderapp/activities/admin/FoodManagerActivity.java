@@ -1,12 +1,18 @@
 package com.example.foodorderapp.activities.admin;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +25,7 @@ import com.example.foodorderapp.adapter.FoodAdapter;
 import com.example.foodorderapp.adapter.FoodAdminAdapter;
 import com.example.foodorderapp.databinding.ActivityAdminBinding;
 import com.example.foodorderapp.databinding.ActivityFoodManagerBinding;
+import com.example.foodorderapp.model.CategoryModel;
 import com.example.foodorderapp.model.FoodModel;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
@@ -29,7 +36,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FoodManagerActivity extends AppCompatActivity {
@@ -39,13 +50,18 @@ public class FoodManagerActivity extends AppCompatActivity {
     private CatetoryAdapter adapter;
     private FoodAdminAdapter foodAdminAdapter;
     private FirebaseAuth mAuth;
-    private DatabaseReference myRef;
+ //   private DatabaseReference myRef;
+
+    private CatetoryAdapter catetoryAdapter;
+
+    FirebaseFirestore database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityFoodManagerBinding.inflate(getLayoutInflater());
         View viewRoot = binding.getRoot();
         setContentView(viewRoot);
+        database = FirebaseFirestore.getInstance();
         preferenceManeger = new PreferenceManeger(getApplicationContext());
 
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
@@ -69,13 +85,14 @@ public class FoodManagerActivity extends AppCompatActivity {
                 addFood();
             }
         });
-        loadfood();
+
+        loadFood();
+        loadCategory();
     }
 
-    void loadfood(){
+    void loadFood(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         binding.recyclerviewfood.setLayoutManager(linearLayoutManager);
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Contants.KEY_COLEECTION_FOODS)
                 .get()
                 .addOnCompleteListener(task->{
@@ -83,6 +100,7 @@ public class FoodManagerActivity extends AppCompatActivity {
                         List<FoodModel> foodModels = new ArrayList<>();
                         for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
                             FoodModel foodModel = new FoodModel();
+                            foodModel.setId_food(queryDocumentSnapshot.getId());
                             foodModel.setName(queryDocumentSnapshot.getString(Contants.KEY_NAME_FOOD));
                             foodModel.setPrice(queryDocumentSnapshot.getString(Contants.KEY_PRICE_FOOD));
                             foodModel.setImage(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_FOOD));
@@ -93,6 +111,33 @@ public class FoodManagerActivity extends AppCompatActivity {
                             foodAdminAdapter = new FoodAdminAdapter(foodModels);
                             binding.recyclerviewfood.setAdapter(foodAdminAdapter);
                             binding.recyclerviewfood.setVisibility(View.VISIBLE);
+                        }else{
+                            Toast.makeText(getApplicationContext(), "recyclerviewfood1", Toast.LENGTH_LONG);
+                        }
+                    }else{
+                        Toast.makeText(getApplicationContext(), "recyclerviewfood2", Toast.LENGTH_LONG);
+                    }
+                });
+    }
+
+    private void loadCategory(){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        binding.recyclerview.setLayoutManager(linearLayoutManager);
+        database.collection(Contants.KEY_COLEECTION_CATEGORY)
+                .get()
+                .addOnCompleteListener(task->{
+                    if(task.isSuccessful() && task.getResult() != null){
+                        List<CategoryModel> categoryModels = new ArrayList<>();
+                        for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+                            CategoryModel categoryModel = new CategoryModel();
+                            categoryModel.setId_category(Integer.parseInt(queryDocumentSnapshot.getString(Contants.KEY_ID_CATEGORY)));
+                            categoryModel.setName_category(queryDocumentSnapshot.getString(Contants.KEY_NAME_CATEGORY));
+                            categoryModel.setImage_category(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_CATEGORY));
+                            categoryModels.add(categoryModel);
+                        }
+                        if(categoryModels.size() >0){
+                            catetoryAdapter = new CatetoryAdapter(categoryModels);
+                            binding.recyclerview.setAdapter(catetoryAdapter);
                         }else{
                             Toast.makeText(getApplicationContext(), "recyclerviewfood1", Toast.LENGTH_LONG);
                         }
@@ -120,23 +165,13 @@ public class FoodManagerActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = myRef.push().getKey();
+             //   String id = myRef.push().getKey();
+                String id = "";
                 String name = edtDetail.getText().toString();
                 String price = edtPrice.getText().toString();
                 String detail = edtDetail.getText().toString();
-            /*    myRef.child(id).setValue(new Post(id,title,content, getRandomColor()))
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Toast.makeText(getApplicationContext(),"Add note successful!",Toast.LENGTH_SHORT).show();
-                                }
-                                else
-                                {
-                                    Toast.makeText(getApplicationContext(),"Add note fail!",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });*/
+                String anh = "";
+                addFoodToDB(id,name,price,detail,anh);
 
                 dialog.dismiss();
             }
@@ -144,7 +179,52 @@ public class FoodManagerActivity extends AppCompatActivity {
 
         dialog.show();
     }
+    public void addFoodToDB(String id, String name, String price, String detail, String anh )
+    {
+        HashMap<String , Object> food = new HashMap<>();
+        food.put(Contants.KEY_NAME_FOOD,name);
+        food.put(Contants.KEY_PRICE_FOOD, price );
+        food.put(Contants.KEY_DETAIL_FOOD,detail );
+        food.put(Contants.KEY_ID_FOOD, id);
+        food.put(Contants.KEY_IMAGE_FOOD,anh );
+        database.collection((Contants.KEY_COLEECTION_FOODS))
+                .add(food)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(getApplicationContext(),"Thêm món ăn thành công",Toast.LENGTH_SHORT).show();
 
+                })
+                .addOnFailureListener(exception->{
+                    Toast.makeText(getApplicationContext(),"Thêm món ăn thất bại",Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == RESULT_OK) {
+                    if(result.getData() != null) {
+                        Uri imageUri = result.getData().getData();
+                        try{
+                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                          //  encodedImage = encodedImage(bitmap);
+                        }catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+    );
+
+    private  String encodedImage(Bitmap bitmap){
+        int previewWidth = 150;
+        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
+        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
     public void addCategory(){
         AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -161,7 +241,7 @@ public class FoodManagerActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = myRef.push().getKey();
+            //    String id = myRef.push().getKey();
                 String name = edtName.getText().toString();
             /*    myRef.child(id).setValue(new Post(id,title,content, getRandomColor()))
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
