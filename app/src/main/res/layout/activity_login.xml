@@ -7,7 +7,9 @@
     android:background="@drawable/background"
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
-    tools:context=".activities.shared.LoginActivity">
+    tools:context=".activities.shared.LoginActivity"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <EditText
         android:id="@+id/et_username"

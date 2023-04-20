@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,10 +23,13 @@ import com.example.foodorderapp.model.FoodModel;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
 
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.Serializable;
@@ -51,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         loadfood();
         LoadidOrder();
         recyclerViewCategory();
+        listenModifyUser();
     }
 
     void loadfood(){
@@ -128,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
     }
     private void loadUserDetails(){
         binding.tvUsername.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
-
+        binding.imgAvatar.setImageBitmap(getAvatarImage(preferenceManeger.getSrting(Contants.KEY_IMAGE_USER)));
     }
     private void showToast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
@@ -280,6 +287,35 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                         }
                     }
                 });
+    }
+    private void listenModifyUser(){
+        database.collection(Contants.KEY_COLEECTION_USERS)
+                .addSnapshotListener(eventListener);
+    }
+    private final EventListener<QuerySnapshot> eventListener = (value, error) ->{
+        if(error !=null){
+            return;
+        }
+        if(value != null){
+
+            for(DocumentChange documentChange : value.getDocumentChanges()){
+                System.out.println(documentChange.getDocument().getString(Contants.KEY_USERNAME));
+                if(documentChange.getType() == DocumentChange.Type.MODIFIED){
+                    String newname = documentChange.getDocument().getString(Contants.KEY_USERNAME);
+                   String image = documentChange.getDocument().getString(Contants.KEY_IMAGE_USER);
+                    binding.imgAvatar.setImageBitmap(getAvatarImage(image));
+                    binding.tvUsername.setText(newname);
+                    preferenceManeger.Remove(Contants.KEY_USERNAME);
+                    preferenceManeger.Remove(Contants.KEY_IMAGE_USER);
+                    preferenceManeger.putString(Contants.KEY_USERNAME , newname);
+                    preferenceManeger.putString(Contants.KEY_IMAGE_USER, image);
+                }
+            }
+        }
+    };
+    private Bitmap getAvatarImage(String encodeImage){
+        byte[] bytes = Base64.decode(encodeImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
     }
         @Override
     public void FoodItemDetailClick(FoodModel food) {

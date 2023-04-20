@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.foodorderapp.activities.user.MainActivity;
@@ -38,16 +39,15 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void SetListener(){
         binding.tvSignin.setOnClickListener(v->onBackPressed());
-//        binding.tvSignin.setOnClickListener(v->{
-//            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            pickImage.launch(intent);
-//        });
+        binding.textAddImage.setOnClickListener(v->{
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            pickImage.launch(intent);
+        });
         binding.tvRegiter.setOnClickListener(v->{
             if(isValidRegisterDetail()){
                 Register();
             }
-           // addfood();
         });
     }
     private void showToast(String message){
@@ -57,16 +57,18 @@ public class RegisterActivity extends AppCompatActivity {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         HashMap<String , Object> user = new HashMap<>();
         user.put(Contants.KEY_USERNAME, binding.etUsername.getText().toString());
-        user.put(Contants.KEY_PHONE, binding.etUsername2.getText().toString());
+        user.put(Contants.KEY_PHONE, binding.etPhonenumber.getText().toString());
         user.put(Contants.KEY_PASSWORD, binding.etPassword.getText().toString());
+        user.put(Contants.KEY_IMAGE_USER , encodedImage);
         database.collection((Contants.KEY_COLEECTION_USERS))
                 .add(user)
                 .addOnSuccessListener(documentReference -> {
                     preferenceManeger.putBoolean(Contants.KEY_IS_LOGINED_IN, true);
                     preferenceManeger.putString(Contants.KEY_USER_ID,documentReference.getId() );
                     preferenceManeger.putString(Contants.KEY_USERNAME , binding.etUsername.getText().toString());
-                    preferenceManeger.putString(Contants.KEY_PHONE , binding.etUsername2.getText().toString());
+                    preferenceManeger.putString(Contants.KEY_PHONE , binding.etPhonenumber.getText().toString());
                     preferenceManeger.putString(Contants.KEY_PASSWORD, binding.etPassword.getText().toString());
+                    preferenceManeger.putString(Contants.KEY_IMAGE_USER, encodedImage);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -79,14 +81,14 @@ public class RegisterActivity extends AppCompatActivity {
         if(binding.etUsername.getText().toString().trim().isEmpty()){
             showToast("Nhập username");
             return false;
-        }else if (binding.etUsername2.getText().toString().trim().isEmpty()){
+        }else if (binding.etPhonenumber.getText().toString().trim().isEmpty()){
             showToast("Nhập number phone");
             return false;
         }
         else if (binding.etPassword.getText().toString().trim().isEmpty()){
             showToast("Nhập mật khẩu");
             return false;
-        }else if(!binding.etPassword2.getText().toString().equals(binding.etPassword.getText().toString())){
+        }else if(!binding.etConfpass.getText().toString().equals(binding.etPassword.getText().toString())){
             showToast("Xác nhận mật khẩu sai");
             return false;
         }else{
@@ -94,70 +96,34 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-//    private void addfood(){
-//
-//        FirebaseFirestore database = FirebaseFirestore.getInstance();
-//        HashMap<String , Object> food = new HashMap<>();
-//        food.put(Contants.KEY_NAME_FOOD,binding.etUsername.getText().toString());
-//        food.put(Contants.KEY_PRICE_FOOD,binding.etUsername2.getText().toString() );
-//        food.put(Contants.KEY_DETAIL_FOOD,binding.etPassword.getText().toString() );
-//        food.put(Contants.KEY_ID_FOOD, binding.etPassword2.getText().toString());
-//        food.put(Contants.KEY_IMAGE_FOOD,encodedImage );
-//        database.collection((Contants.KEY_COLEECTION_FOODS))
-//                .add(food)
-//                .addOnSuccessListener(documentReference -> {
-//                    showToast("Đăng ký thành công");
-//
-//                })
-//                .addOnFailureListener(exception->{
-//                    showToast("Đăng ký thất bại");
-//                });
-//    }
-//
-//
-//    private void addCategory(){
-//
-//        FirebaseFirestore database = FirebaseFirestore.getInstance();
-//        HashMap<String , Object> food = new HashMap<>();
-//        food.put(Contants.KEY_NAME_CATEGORY,binding.etUsername.getText().toString());
-//        food.put(Contants.KEY_ID_CATEGORY,binding.etUsername2.getText().toString() );
-//        food.put(Contants.KEY_IMAGE_CATEGORY,encodedImage );
-//        database.collection((Contants.KEY_COLEECTION_CATEGORY))
-//                .add(food)
-//                .addOnSuccessListener(documentReference -> {
-//                    showToast("Đăng ký thành công");
-//
-//                })
-//                .addOnFailureListener(exception->{
-//                    showToast("Đăng ký thất bại");
-//                });
-//    }
-//
-//    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
-//            new ActivityResultContracts.StartActivityForResult(),
-//            result -> {
-//                if(result.getResultCode() == RESULT_OK) {
-//                    if(result.getData() != null) {
-//                        Uri imageUri = result.getData().getData();
-//                        try{
-//                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
-//                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//                            encodedImage = encodedImage(bitmap);
-//                        }catch (FileNotFoundException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            }
-//    );
-//
-//    private  String encodedImage(Bitmap bitmap){
-//        int previewWidth = 150;
-//        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
-//        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
-//        byte[] bytes = byteArrayOutputStream.toByteArray();
-//        return Base64.encodeToString(bytes, Base64.DEFAULT);
-//    }
+
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == RESULT_OK) {
+                    if(result.getData() != null) {
+                        Uri imageUri = result.getData().getData();
+                        try{
+                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            binding.imgAvatar.setImageBitmap(bitmap);
+                            binding.textAddImage.setVisibility(View.GONE);
+                            encodedImage = encodedImage(bitmap);
+                        }catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+    );
+
+    private  String encodedImage(Bitmap bitmap){
+        int previewWidth = 150;
+        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
+        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
 }

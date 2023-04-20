@@ -55,6 +55,8 @@ public class LoginActivity extends AppCompatActivity {
                         preferenceManeger.putBoolean(Contants.KEY_IS_LOGINED_IN, true);
                         preferenceManeger.putString(Contants.KEY_USER_ID, documentSnapshot.getId());
                         preferenceManeger.putString(Contants.KEY_USERNAME, documentSnapshot.getString(Contants.KEY_USERNAME));
+                        preferenceManeger.putString(Contants.KEY_PHONE, documentSnapshot.getString(Contants.KEY_PHONE));
+                        preferenceManeger.putString(Contants.KEY_IMAGE_USER, documentSnapshot.getString(Contants.KEY_IMAGE_USER));
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

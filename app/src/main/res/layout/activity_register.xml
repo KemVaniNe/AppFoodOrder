@@ -13,7 +13,6 @@
         android:id="@+id/et_username"
         android:layout_width="351dp"
         android:layout_height="64dp"
-        android:layout_marginTop="20dp"
         android:background="@drawable/input_bg"
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="10dp"
@@ -25,15 +24,16 @@
         android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
     <EditText
-        android:id="@+id/et_username2"
+        android:id="@+id/et_phonenumber"
         android:layout_width="351dp"
         android:layout_height="64dp"
         android:layout_marginTop="20dp"
@@ -57,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/et_username" />
 
     <EditText
-        android:id="@+id/et_password"
+        android:id="@+id/et_confpass"
         android:layout_width="345dp"
         android:layout_height="64dp"
         android:layout_marginTop="20dp"
@@ -78,10 +78,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_password2" />
+        app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
     <EditText
-        android:id="@+id/et_password2"
+        android:id="@+id/et_password"
         android:layout_width="345dp"
         android:layout_height="64dp"
         android:layout_marginTop="20dp"
@@ -102,33 +102,51 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_username2" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ORDER"
-        android:textColor="@color/white"
-        android:textSize="80dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/et_phonenumber" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="FOOD"
+        android:text="Create Acount"
         android:textColor="@color/white"
-        android:textSize="50dp"
+        android:textSize="32dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:ignore="MissingConstraints">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="100dp"
+            android:layout_height="95dp"
+            android:src="@drawable/background_image"
+            android:scaleType="centerCrop"
+            app:riv_oval="true">
+
+        </com.makeramen.roundedimageview.RoundedImageView>
+
+        <TextView
+            android:id="@+id/textAddImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Add Image"
+            android:textColor="#616161"
+            android:textSize="15sp" />
+
+    </FrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/btn_checkout"
@@ -136,9 +154,9 @@
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/btn"
-        app:layout_constraintEnd_toEndOf="@+id/et_password"
-        app:layout_constraintStart_toStartOf="@+id/et_password"
-        app:layout_constraintTop_toBottomOf="@+id/et_password">
+        app:layout_constraintEnd_toEndOf="@+id/et_confpass"
+        app:layout_constraintStart_toStartOf="@+id/et_confpass"
+        app:layout_constraintTop_toBottomOf="@+id/et_confpass">
 
         <TextView
             android:id="@+id/tv_regiter"
@@ -159,8 +177,8 @@
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/btn"
-        app:layout_constraintEnd_toEndOf="@+id/et_password"
-        app:layout_constraintStart_toStartOf="@+id/et_password"
+        app:layout_constraintEnd_toEndOf="@+id/et_confpass"
+        app:layout_constraintStart_toStartOf="@+id/et_confpass"
         app:layout_constraintTop_toBottomOf="@+id/btn_checkout">
 
         <TextView
