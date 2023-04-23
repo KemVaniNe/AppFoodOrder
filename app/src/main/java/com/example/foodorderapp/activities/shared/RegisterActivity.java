@@ -25,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 public class RegisterActivity extends AppCompatActivity {
     ActivityRegisterBinding binding;
     private PreferenceManeger preferenceManeger;
@@ -56,10 +58,12 @@ public class RegisterActivity extends AppCompatActivity {
     private void Register(){
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         HashMap<String , Object> user = new HashMap<>();
+        String hashPassword = BCrypt.withDefaults().hashToString(12,binding.etPassword.getText().toString().toCharArray() );
         user.put(Contants.KEY_USERNAME, binding.etUsername.getText().toString());
         user.put(Contants.KEY_PHONE, binding.etPhonenumber.getText().toString());
-        user.put(Contants.KEY_PASSWORD, binding.etPassword.getText().toString());
+        user.put(Contants.KEY_PASSWORD, hashPassword);
         user.put(Contants.KEY_IMAGE_USER , encodedImage);
+        user.put(Contants.KEY_ROLE_USER , "User");
         database.collection((Contants.KEY_COLEECTION_USERS))
                 .add(user)
                 .addOnSuccessListener(documentReference -> {
@@ -69,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                     preferenceManeger.putString(Contants.KEY_PHONE , binding.etPhonenumber.getText().toString());
                     preferenceManeger.putString(Contants.KEY_PASSWORD, binding.etPassword.getText().toString());
                     preferenceManeger.putString(Contants.KEY_IMAGE_USER, encodedImage);
+                    preferenceManeger.putString(Contants.KEY_ROLE_USER , "User");
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

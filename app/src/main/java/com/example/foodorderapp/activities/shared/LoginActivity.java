@@ -8,12 +8,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.foodorderapp.activities.admin.AdminActivity;
 import com.example.foodorderapp.activities.user.MainActivity;
 import com.example.foodorderapp.databinding.ActivityLoginBinding;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -47,19 +50,34 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Contants.KEY_COLEECTION_USERS)
                 .whereEqualTo(Contants.KEY_USERNAME, binding.etUsername.getText().toString())
-                .whereEqualTo(Contants.KEY_PASSWORD, binding.etPassword.getText().toString())
                 .get()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful() && task.getResult() != null && task.getResult().getDocumentChanges().size()> 0){
+
+
                         DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-                        preferenceManeger.putBoolean(Contants.KEY_IS_LOGINED_IN, true);
-                        preferenceManeger.putString(Contants.KEY_USER_ID, documentSnapshot.getId());
-                        preferenceManeger.putString(Contants.KEY_USERNAME, documentSnapshot.getString(Contants.KEY_USERNAME));
-                        preferenceManeger.putString(Contants.KEY_PHONE, documentSnapshot.getString(Contants.KEY_PHONE));
-                        preferenceManeger.putString(Contants.KEY_IMAGE_USER, documentSnapshot.getString(Contants.KEY_IMAGE_USER));
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                        String hashPassword = documentSnapshot.getString(Contants.KEY_PASSWORD);
+                        BCrypt.Result result = BCrypt.verifyer().verify(binding.etPassword.getText().toString().toCharArray() , hashPassword);
+                       if(result.verified){
+                           preferenceManeger.putBoolean(Contants.KEY_IS_LOGINED_IN, true);
+                           preferenceManeger.putString(Contants.KEY_USER_ID, documentSnapshot.getId());
+                           preferenceManeger.putString(Contants.KEY_USERNAME, documentSnapshot.getString(Contants.KEY_USERNAME));
+                           preferenceManeger.putString(Contants.KEY_PHONE, documentSnapshot.getString(Contants.KEY_PHONE));
+                           preferenceManeger.putString(Contants.KEY_IMAGE_USER, documentSnapshot.getString(Contants.KEY_IMAGE_USER));
+                           preferenceManeger.putString(Contants.KEY_ROLE_USER , documentSnapshot.getString(Contants.KEY_ROLE_USER));
+                           preferenceManeger.putString(Contants.KEY_PASSWORD , binding.etPassword.getText().toString());
+                           if(documentSnapshot.getString(Contants.KEY_ROLE_USER).equals("Admin")){
+                               Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                               intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                               startActivity(intent);
+                           }else{
+                               Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                               intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                               startActivity(intent);
+                           }
+                       }else{
+                           showToast("Sai mật khẩu!");
+                       }
                     }else{
                         showToast("Sai username , mật khẩu!");
                     }

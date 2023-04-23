@@ -28,10 +28,9 @@
 
         <TextView
             android:id="@+id/tv_nameFood"
-
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
             android:gravity="center"
+            android:layout_height="wrap_content"
             android:text="Name"
             android:textColor="@color/black"
             android:textSize="17sp"
@@ -41,21 +40,15 @@
 
         </TextView>
 
-        <TextView
-            android:id="@+id/price_detail"
-            android:layout_width="101dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="300dp"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:text="Price"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold">
+        <ImageView
+            android:id="@+id/img_Evaluation"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/star"
+            android:layout_marginLeft="310dp"
+            android:layout_marginTop="20dp">
 
-        </TextView>
-
-
+        </ImageView>
 
         <TextView
             android:layout_width="wrap_content"

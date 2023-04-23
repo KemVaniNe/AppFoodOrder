@@ -3,10 +3,17 @@ package com.example.foodorderapp.activities.user;
  import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+ import android.app.Dialog;
+ import android.content.Intent;
+ import android.graphics.drawable.ColorDrawable;
  import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
+ import android.view.Gravity;
+ import android.view.View;
+ import android.view.Window;
+ import android.view.WindowManager;
+ import android.widget.Toast;
 
+ import com.example.foodorderapp.R;
  import com.example.foodorderapp.adapter.CartAdapter;
  import com.example.foodorderapp.databinding.ActivityCheckoutBinding;
 import com.example.foodorderapp.listener.OrderAddorSubListener;
@@ -58,7 +65,43 @@ public class CheckoutActivity extends AppCompatActivity implements OrderAddorSub
                     .addOnSuccessListener(unused->showToast("Đặt món thành công!"))
                     .addOnFailureListener(e->showToast("Đặt món thất bại!"));
             preferenceManeger.Remove(Contants.KEY_ID_ORDER);
+            openDialog(Gravity.CENTER);
+
         });
+    }
+    public void openDialog(int gravity){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_checkout_layout);
+        Window window = dialog.getWindow();
+        if(window == null){
+            return;
+        }
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        WindowManager.LayoutParams windowatrributes = window.getAttributes();
+        windowatrributes.gravity = gravity;
+        window.setAttributes(windowatrributes);
+
+        if(Gravity.BOTTOM == gravity){
+            dialog.setCancelable(true);
+        }else{
+            dialog.setCancelable(false);
+        }
+        dialog.findViewById(R.id.btn_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.findViewById(R.id.btn_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        dialog.show();
     }
     public void loadCart(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

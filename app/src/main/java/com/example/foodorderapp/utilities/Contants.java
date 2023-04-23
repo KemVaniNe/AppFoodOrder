@@ -12,6 +12,7 @@ public class Contants {
     public static  final  String KEY_FCM_TOKEN = "fcmToken";
     public static  final  String KEY_USER_ID = "userid";
     public static final  String KEY_IMAGE_USER = "userimage";
+    public static  final  String KEY_ROLE_USER = "role";
     public static  final  String KEY_COLEECTION_FOODS = "foods";
     public static  final  String KEY_NAME_FOOD = "name";
     public static  final  String KEY_PRICE_FOOD = "price";
@@ -27,4 +28,10 @@ public class Contants {
     public static  final  String KEY_ID_ORDER = "orderid";
     public static  final  String KEY_STATUS_ORDER = "status";
     public static  final  String KEY_COLEECTION_ORDER_DETAIL = "ORDERSdetail";
+    public static  final  String KEY_COLEECTION_EVALUETION = "evaluetion";
+    public static  final  String KEY_ID_EVALUETION = "evaluetionid";
+    public static  final  String KEY_RATE_EVALUETION = "rate";
+    public static  final  String KEY_COMMENT_EVALUETION = "comment";
+
+
 }

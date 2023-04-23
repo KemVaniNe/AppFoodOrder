@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                     }else{
                         showToast("Error recyclerviewfood2");
                     }
+                })
+                .addOnFailureListener(e -> {
+                    System.out.println(e);
                 });
   }
 

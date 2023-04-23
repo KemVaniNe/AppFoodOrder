@@ -63,5 +63,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
-
+    implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.9.0'
 }

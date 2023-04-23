@@ -33,6 +33,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 public class AccountActivity extends AppCompatActivity {
 
     private ActivityAccountBinding binding;
@@ -168,7 +170,7 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Boolean check = true;
-                if (edoldpass.getText().toString().equals(preferenceManeger.getSrting(Contants.KEY_PASSWORD))){
+                if (!edoldpass.getText().toString().equals(preferenceManeger.getSrting(Contants.KEY_PASSWORD))){
                     showToast("Nhập mật khẩu cũ sai");
                     check= false;
                 }
@@ -182,7 +184,9 @@ public class AccountActivity extends AppCompatActivity {
                 if(check){
                     HashMap<String, Object> user = new HashMap<>();
                     String user_id = preferenceManeger.getSrting(Contants.KEY_USER_ID);
-                    user.put(Contants.KEY_PASSWORD, newpass.getText().toString());
+                    String hashPassword = BCrypt.withDefaults().hashToString(12,newpass.getText().toString().toCharArray() );
+
+                    user.put(Contants.KEY_PASSWORD, hashPassword);
                     database.collection(Contants.KEY_COLEECTION_USERS)
                             .document(user_id)
                             .update(user)
