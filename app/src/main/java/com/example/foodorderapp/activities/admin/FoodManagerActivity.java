@@ -1,25 +1,37 @@
 package com.example.foodorderapp.activities.admin;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.foodorderapp.R;
+import com.example.foodorderapp.activities.user.MainActivity;
 import com.example.foodorderapp.adapter.CatetoryAdapter;
 import com.example.foodorderapp.adapter.FoodAdapter;
 import com.example.foodorderapp.adapter.FoodAdminAdapter;
@@ -35,26 +47,62 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.grpc.Context;
+
 public class FoodManagerActivity extends AppCompatActivity {
+    private static final int MY_REQUEST_CODE = 10;
+    private static final String TAG = MainActivity.class.getName();
     private ActivityFoodManagerBinding binding;
     private PreferenceManeger preferenceManeger;
 
     private CatetoryAdapter adapter;
     private FoodAdminAdapter foodAdminAdapter;
-    private FirebaseAuth mAuth;
- //   private DatabaseReference myRef;
+
+    private StorageReference storageRef;
 
     private CatetoryAdapter catetoryAdapter;
 
-    FirebaseFirestore database;
+    private FirebaseFirestore database;
+
+    private ImageView imgUpload;
+
+    private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Log.e(TAG, "onActivityResult");
+                if(result.getResultCode() == Activity.RESULT_OK)
+                {
+                    Intent data = result.getData();
+                    if(data == null)
+                    {
+                        return;
+                    }
+                    Uri uri = data.getData();
+                    try
+                    {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
+                        imgUpload.setImageBitmap(bitmap);
+                    }catch(IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+            }
+        }
+    );
+
+    public FoodManagerActivity() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +133,7 @@ public class FoodManagerActivity extends AppCompatActivity {
                 addFood();
             }
         });
+
 
         loadFood();
         loadCategory();
@@ -161,13 +210,22 @@ public class FoodManagerActivity extends AppCompatActivity {
         EditText edtName = mView.findViewById(R.id.edt_name);
         EditText edtPrice = mView.findViewById(R.id.edt_price);
         EditText edtDetail = mView.findViewById(R.id.edt_detail);
+        imgUpload = mView.findViewById(R.id.btn_addPicFood);
+
+        imgUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickRequestPermission();
+
+            }
+        });
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
              //   String id = myRef.push().getKey();
                 String id = "";
-                String name = edtDetail.getText().toString();
+                String name = edtName.getText().toString();
                 String price = edtPrice.getText().toString();
                 String detail = edtDetail.getText().toString();
                 String anh = "";
@@ -179,6 +237,38 @@ public class FoodManagerActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
+    private void onClickRequestPermission() {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            return;
+        }
+        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            openGallery();
+        }
+        else {
+            String [] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
+            requestPermissions(permission,MY_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == MY_REQUEST_CODE)
+        {
+            if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                openGallery();
+            }
+        }
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        mActivityResultLauncher.launch(Intent.createChooser(intent, "Select picture"));
+    }
+
     public void addFoodToDB(String id, String name, String price, String detail, String anh )
     {
         HashMap<String , Object> food = new HashMap<>();
@@ -198,33 +288,7 @@ public class FoodManagerActivity extends AppCompatActivity {
                 });
     }
 
-    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if(result.getResultCode() == RESULT_OK) {
-                    if(result.getData() != null) {
-                        Uri imageUri = result.getData().getData();
-                        try{
-                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
-                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                          //  encodedImage = encodedImage(bitmap);
-                        }catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-    );
 
-    private  String encodedImage(Bitmap bitmap){
-        int previewWidth = 150;
-        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
-        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
-        byte[] bytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(bytes, Base64.DEFAULT);
-    }
     public void addCategory(){
         AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -241,21 +305,6 @@ public class FoodManagerActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //    String id = myRef.push().getKey();
-                String name = edtName.getText().toString();
-            /*    myRef.child(id).setValue(new Post(id,title,content, getRandomColor()))
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Toast.makeText(getApplicationContext(),"Add note successful!",Toast.LENGTH_SHORT).show();
-                                }
-                                else
-                                {
-                                    Toast.makeText(getApplicationContext(),"Add note fail!",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });*/
 
                 dialog.dismiss();
             }
@@ -263,4 +312,5 @@ public class FoodManagerActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
 }

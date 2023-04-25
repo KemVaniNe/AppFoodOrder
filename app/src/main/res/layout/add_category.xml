@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:padding="30dp">
+    android:padding="10dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,12 +14,13 @@
         android:text="Add new category"
         android:textSize="30sp"
         ></TextView>
+
     <EditText
         android:id="@+id/edt_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name category">
-    </EditText>
+        android:hint="Name category"
+        android:textSize="20dp"></EditText>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,22 +28,25 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/btn_addPic"
             android:layout_width="100dp"
             android:layout_height="100dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView4"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/thuc_an" />
+            app:srcCompat="@drawable/photo" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:text="Picture"
-            tools:layout_editor_absoluteX="4dp"
-            tools:layout_editor_absoluteY="35dp"
-            android:textSize="19dp"/>
+            android:textSize="19dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
