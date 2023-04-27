@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_user_account"
+    app:startDestination="@id/navUserAccountFragment">
+
+    <fragment
+        android:id="@+id/navUserAccountFragment"
+        android:name="com.example.foodorderapp.View.User.NavUserAccountFragment"
+        android:label="fragment_nav_user_account"
+        tools:layout="@layout/fragment_nav_user_account" >
+        <action
+            android:id="@+id/action_navUserAccountFragment_to_navUserCartFragment"
+            app:destination="@id/navUserCartFragment" />
+        <action
+            android:id="@+id/action_navUserAccountFragment_to_navUserAccountManagerFragment"
+            app:destination="@id/navUserAccountManagerFragment" />
+        <action
+            android:id="@+id/action_navUserAccountFragment_to_navUserSupportFragment"
+            app:destination="@id/navUserSupportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navUserCartFragment"
+        android:name="com.example.foodorderapp.View.User.navUserCartFragment"
+        android:label="fragment_nav_user_cart"
+        tools:layout="@layout/fragment_nav_user_cart" >
+        <action
+            android:id="@+id/action_navUserCartFragment_to_navUserAccountFragment"
+            app:destination="@id/navUserAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navUserAccountManagerFragment"
+        android:name="com.example.foodorderapp.View.User.navUserAccountManagerFragment"
+        android:label="fragment_nav_user_account_manager"
+        tools:layout="@layout/fragment_nav_user_account_manager" >
+        <action
+            android:id="@+id/action_navUserAccountManagerFragment_to_navUserAccountFragment"
+            app:destination="@id/navUserAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navUserSupportFragment"
+        android:name="com.example.foodorderapp.View.User.navUserSupportFragment"
+        android:label="fragment_nav_user_support"
+        tools:layout="@layout/fragment_nav_user_support" >
+        <action
+            android:id="@+id/action_navUserSupportFragment_to_navUserAccountFragment"
+            app:destination="@id/navUserAccountFragment" />
+    </fragment>
+</navigation>

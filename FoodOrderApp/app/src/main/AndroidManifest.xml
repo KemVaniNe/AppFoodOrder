@@ -15,16 +15,16 @@
             android:name=".View.Share.RegisterActivity"
             android:exported="false" />
         <activity
-
             android:name=".View.Admin.AdminMainActivity"
+
+            android:exported="false" />
+        <activity
+            android:name=".View.User.UserMainActivity"
+
             android:exported="false" />
         <activity
             android:name=".View.Share.LoginActivity"
 
-            android:exported="false" />
-        <activity
-
-            android:name=".View.User.UserMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
