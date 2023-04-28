@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white_corner_16dp"
+    android:layout_margin="16dp"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="Change password"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:background="@drawable/bg_blue_corner_16dp_top_left_top_right"
+        android:textColor="@color/black"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="Nhập thông tin vào các trường"/>
+        <EditText
+            android:id="@+id/ed_oldpass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Nhập mật khẩu cũ"
+            android:background="@drawable/bg_white_corner_10dp_border_gray"
+            android:padding="12dp"/>
+        <EditText
+            android:id="@+id/ed_newpass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Nhập mật khẩu mới"
+            android:background="@drawable/bg_white_corner_10dp_border_gray"
+            android:padding="12dp"/>
+        <EditText
+            android:id="@+id/edt_confirmPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Xác nhận mật khẩu"
+            android:background="@drawable/bg_white_corner_10dp_border_gray"
+            android:padding="12dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/bt_cancle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:layout_marginEnd="10dp"
+            android:alpha="0.4"
+            android:background="@drawable/bg_gray_corner_10"
+            android:text="Huỷ"></androidx.appcompat.widget.AppCompatButton>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/bt_update"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:background="@drawable/bg_blue_corner_10"
+            android:text="Cập nhật"></androidx.appcompat.widget.AppCompatButton>
+    </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
