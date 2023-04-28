@@ -1,11 +1,14 @@
 package com.example.foodorderapp.View.User;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import android.util.Base64;
@@ -40,23 +43,32 @@ public class NavUserAccountFragment extends Fragment {
         binding.btnHoTro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(UserActivity.this, SupportActivity.class);
-//                startActivityForResult(intent, 1);
+                navUserSupportFragment fragment = new navUserSupportFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_user_account, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 
         binding.btnQuanLyTaiKhoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(UserActivity.this, AccountActivity.class);
-//                startActivityForResult(intent, 1);
+                navUserAccountManagerFragment fragment = new navUserAccountManagerFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_user_account, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
         binding.btnDonHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(UserActivity.this, OrderActivity.class);
-//                startActivityForResult(intent, 1);
+                navUserCartFragment fragment = new navUserCartFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_user_account, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
         return binding.getRoot();

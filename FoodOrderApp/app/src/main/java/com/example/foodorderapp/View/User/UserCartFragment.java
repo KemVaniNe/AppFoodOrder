@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.Gravity;
@@ -77,18 +78,18 @@ public class UserCartFragment extends Fragment implements OrderAddorSubListener 
         SimpleDateFormat ft = new SimpleDateFormat("yyyy.MM.dd ");
 
         binding.tvOrder.setOnClickListener(v->{
-            Map<String, Object> updates = new HashMap<>();
-            updates.put(Contants.KEY_STATUS_ORDER, true );
-            updates.put("CreateAt" , ft.format(dnow) );
-            updates.put("Total" , binding.tvTotal.getText());
-            DocumentReference documentReference =
-                    database.collection(Contants.KEY_COLEECTION_ORDER).document(
-                            preferenceManeger.getSrting(Contants.KEY_ID_ORDER)
-                    );
-            documentReference.update(updates)
-                    .addOnSuccessListener(unused->showToast("Đặt món thành công!"))
-                    .addOnFailureListener(e->showToast("Đặt món thất bại!"));
-            preferenceManeger.Remove(Contants.KEY_ID_ORDER);
+           Map<String, Object> updates = new HashMap<>();
+           updates.put(Contants.KEY_STATUS_ORDER, true );
+           updates.put("CreateAt" , ft.format(dnow) );
+           updates.put("Total" , binding.tvTotal.getText());
+           DocumentReference documentReference =
+                   database.collection(Contants.KEY_COLEECTION_ORDER).document(
+                           preferenceManeger.getSrting(Contants.KEY_ID_ORDER)
+                   );
+           documentReference.update(updates)
+                   .addOnSuccessListener(unused->showToast("Đặt món thành công!"))
+                   .addOnFailureListener(e->showToast("Đặt món thất bại!"));
+           preferenceManeger.Remove(Contants.KEY_ID_ORDER);
             openDialog(Gravity.CENTER);
 
         });
@@ -120,9 +121,12 @@ public class UserCartFragment extends Fragment implements OrderAddorSubListener 
         dialog.findViewById(R.id.btn_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), UserMainActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                dialog.dismiss();
+                UserMainFragment fragment = new UserMainFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.user_cart, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
         dialog.show();
@@ -195,7 +199,7 @@ public class UserCartFragment extends Fragment implements OrderAddorSubListener 
     }
 
     private void showToast(String message){
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
     }
 
     @Override

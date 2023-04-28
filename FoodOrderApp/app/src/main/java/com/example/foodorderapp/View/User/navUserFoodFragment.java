@@ -6,7 +6,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -16,8 +20,10 @@ import android.widget.Toast;
 
 import com.example.foodorderapp.Adapter.CatetoryAdapter;
 import com.example.foodorderapp.Adapter.FoodAdapter;
+import com.example.foodorderapp.Adapter.PosterAdapter;
 import com.example.foodorderapp.Model.CategoryModel;
 import com.example.foodorderapp.Model.FoodModel;
+import com.example.foodorderapp.Model.Poster;
 import com.example.foodorderapp.R;
 import com.example.foodorderapp.View.Share.LoginActivity;
 import com.example.foodorderapp.databinding.FragmentNavUserFoodBinding;
@@ -35,15 +41,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link navUserFoodFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import me.relex.circleindicator.CircleIndicator;
+
 public class navUserFoodFragment extends Fragment implements CategoryListener, FoodListener {
     private FragmentNavUserFoodBinding binding;
     String categoryId="";
@@ -51,6 +55,9 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
     private FoodAdapter foodAdapter;
     private PreferenceManeger preferenceManeger;
     FirebaseFirestore database ;
+    private ViewPager viewPager;
+    private CircleIndicator circleIndicator;
+    private PosterAdapter posterAdapter;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -94,8 +101,25 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
         recyclerViewCategory();
         listenModifyUser();
         View view = binding.getRoot();
+        viewPager = view.findViewById(R.id.viewpager);
+        circleIndicator = view.findViewById(R.id.circle_indicator);
+
+        posterAdapter = new PosterAdapter(getActivity(), getListPoster());
+        viewPager.setAdapter(posterAdapter);
+
+        circleIndicator.setViewPager(viewPager);
+        posterAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
         return view;
+    }
+    private List<Poster> getListPoster(){
+        List<Poster> list = new ArrayList<>();
+        list.add(new Poster(R.drawable.poster1));
+        list.add(new Poster(R.drawable.poster2));
+        list.add(new Poster(R.drawable.poster3));
+        list.add(new Poster(R.drawable.poster4));
+        list.add(new Poster(R.drawable.poster5));
+        return list;
     }
     void loadfood(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -346,8 +370,9 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
     }
     @Override
     public void FoodItemDetailClick(FoodModel food) {
-//        Intent intent = new Intent(getActivity(), DetailActivity.class);
-//        intent.putExtra("FOOD" ,(Serializable) food);
-//        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("FOOD",(Serializable) food);
+        NavController navController = Navigation.findNavController(binding.getRoot());
+        navController.navigate(R.id.navUserFoodDetailFragment, bundle);
     }
 }
