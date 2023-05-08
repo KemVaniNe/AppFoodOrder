@@ -350,17 +350,18 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
         if(value != null){
 
             for(DocumentChange documentChange : value.getDocumentChanges()){
-                System.out.println(documentChange.getDocument().getString(Contants.KEY_USERNAME));
-                if(documentChange.getType() == DocumentChange.Type.MODIFIED){
-                    String newname = documentChange.getDocument().getString(Contants.KEY_USERNAME);
-                    String image = documentChange.getDocument().getString(Contants.KEY_IMAGE_USER);
-                    binding.imgAvatar.setImageBitmap(getAvatarImage(image));
-                    binding.tvUsername.setText(newname);
-                    preferenceManeger.Remove(Contants.KEY_USERNAME);
-                    preferenceManeger.Remove(Contants.KEY_IMAGE_USER);
-                    preferenceManeger.putString(Contants.KEY_USERNAME , newname);
-                    preferenceManeger.putString(Contants.KEY_IMAGE_USER, image);
-                }
+                   if(documentChange.getType() == DocumentChange.Type.MODIFIED){
+                       if(documentChange.getDocument().getId().equals(preferenceManeger.getSrting(Contants.KEY_USER_ID))){
+                           String newname = documentChange.getDocument().getString(Contants.KEY_USERNAME);
+                           String image = documentChange.getDocument().getString(Contants.KEY_IMAGE_USER);
+                           binding.imgAvatar.setImageBitmap(getAvatarImage(image));
+                           binding.tvUsername.setText(newname);
+                           preferenceManeger.Remove(Contants.KEY_USERNAME);
+                           preferenceManeger.Remove(Contants.KEY_IMAGE_USER);
+                           preferenceManeger.putString(Contants.KEY_USERNAME , newname);
+                           preferenceManeger.putString(Contants.KEY_IMAGE_USER, image);
+                       }
+                   }
             }
         }
     };

@@ -58,8 +58,6 @@ public class LoginActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful() && task.getResult() != null && task.getResult().getDocumentChanges().size()> 0){
-
-
                         DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
                         String hashPassword = documentSnapshot.getString(Contants.KEY_PASSWORD);
                         BCrypt.Result result = BCrypt.verifyer().verify(binding.etPassword.getText().toString().toCharArray() , hashPassword);
