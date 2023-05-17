@@ -8,12 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.foodorderapp.adapter.FoodAdminAdapter;
-import com.example.foodorderapp.adapter.UserAdminAdapter;
-import com.example.foodorderapp.databinding.ActivityAdminBinding;
-import com.example.foodorderapp.databinding.ActivityOrderManagerBinding;
 import com.example.foodorderapp.databinding.ActivityUserManagerBinding;
-import com.example.foodorderapp.model.FoodModel;
 import com.example.foodorderapp.model.UserModel;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
@@ -27,7 +22,7 @@ public class UserManagerActivity extends AppCompatActivity {
     private ActivityUserManagerBinding binding;
     private PreferenceManeger preferenceManeger;
 
-    private UserAdminAdapter userAdminAdapter;
+  //  private UserAdminAdapter userAdminAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,9 +58,9 @@ public class UserManagerActivity extends AppCompatActivity {
                             userModels.add(userModel);
                         }
                         if(userModels.size() >0){
-                            userAdminAdapter = new UserAdminAdapter(userModels);
-                            binding.recyclerview.setAdapter(userAdminAdapter);
-                            binding.recyclerview.setVisibility(View.VISIBLE);
+                       //     userAdminAdapter = new UserAdminAdapter(userModels);
+                       //     binding.recyclerview.setAdapter(userAdminAdapter);
+                       //     binding.recyclerview.setVisibility(View.VISIBLE);
                         }else{
                             Toast.makeText(getApplicationContext(), "recyclerviewfood1", Toast.LENGTH_LONG);
                         }

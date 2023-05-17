@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_food"
+        android:id="@+id/menu_admin_food"
         android:icon="@drawable/clipboard"
         android:title="Food manager"/>
 
     <item
-        android:id="@+id/menu_user"
+        android:id="@+id/menu_admin_user"
         android:icon="@drawable/group"
         android:title="User manager"/>
 
     <item
-        android:id="@+id/menu_cart"
+        android:id="@+id/menu_admin_cart"
         android:icon="@drawable/shopping_cart"
         android:title="Order manager"/>
 
     <item
-        android:id="@+id/menu_account"
+        android:id="@+id/menu_admin_account"
         android:icon="@drawable/user_menu"
         android:title="Account manager"/>
 

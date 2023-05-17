@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+    <TextView
+        android:id="@+id/tv_selected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        android:textColor="@color/orange"
+        android:layout_toStartOf="@id/img_dropDown"
+        android:padding="10dp"
+        android:textSize="20dp"/>
+
+    <ImageView
+        android:id="@+id/img_dropDown"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/baseline_arrow_drop_down_24"
+        android:layout_centerVertical="true"/>
+</RelativeLayout>

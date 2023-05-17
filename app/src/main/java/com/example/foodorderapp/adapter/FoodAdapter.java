@@ -46,8 +46,6 @@ public class FoodAdapter extends  RecyclerView.Adapter<FoodAdapter.FoodViewHolde
     public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
         holder.setFooddata(foodModels.get(position));
 
-        
-
     }
     @Override
     public int getItemCount() {

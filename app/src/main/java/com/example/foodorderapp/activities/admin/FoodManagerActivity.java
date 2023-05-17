@@ -1,14 +1,10 @@
 package com.example.foodorderapp.activities.admin;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
@@ -16,12 +12,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,34 +24,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.foodorderapp.NewAdapter.FoodAdminAdapter;
 import com.example.foodorderapp.R;
 import com.example.foodorderapp.activities.user.MainActivity;
 import com.example.foodorderapp.adapter.CatetoryAdapter;
-import com.example.foodorderapp.adapter.FoodAdapter;
-import com.example.foodorderapp.adapter.FoodAdminAdapter;
-import com.example.foodorderapp.databinding.ActivityAdminBinding;
 import com.example.foodorderapp.databinding.ActivityFoodManagerBinding;
 import com.example.foodorderapp.model.CategoryModel;
 import com.example.foodorderapp.model.FoodModel;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import io.grpc.Context;
 
 public class FoodManagerActivity extends AppCompatActivity {
     private static final int MY_REQUEST_CODE = 10;
@@ -157,9 +140,9 @@ public class FoodManagerActivity extends AppCompatActivity {
                             foodModels.add(foodModel);
                         }
                         if(foodModels.size() >0){
-                            foodAdminAdapter = new FoodAdminAdapter(foodModels);
+                         /*   foodAdminAdapter = new FoodAdminAdapter(foodModels,this);
                             binding.recyclerviewfood.setAdapter(foodAdminAdapter);
-                            binding.recyclerviewfood.setVisibility(View.VISIBLE);
+                            binding.recyclerviewfood.setVisibility(View.VISIBLE);*/
                         }else{
                             Toast.makeText(getApplicationContext(), "recyclerviewfood1", Toast.LENGTH_LONG);
                         }

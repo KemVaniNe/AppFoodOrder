@@ -6,8 +6,6 @@ public class FoodModel implements Serializable{
     private String image;
     private String price;
 
-
-
     private String detail;
 
     public String getId_food() {

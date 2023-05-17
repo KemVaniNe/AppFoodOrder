@@ -11,4 +11,6 @@
     <color name="gray">#E2E6DD</color>
     <color name="dialog_color_1">#FDD736</color>
     <color name="dialog_color_2">#3B5796</color>
+    <color name="orange">#F1521F</color>
+    <color name="orange_btn">#F48865</color>
 </resources>
