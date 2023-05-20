@@ -7,7 +7,9 @@
     tools:context=".View.User.navUserFoodDetailFragment"
     android:background="@color/white"
     android:id="@+id/nav_user_food"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

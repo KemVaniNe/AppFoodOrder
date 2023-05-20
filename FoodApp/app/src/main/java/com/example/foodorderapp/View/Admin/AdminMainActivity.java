@@ -8,8 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.foodorderapp.Adapter.AdminViewPagerAdapter;
-import com.example.foodorderapp.Adapter.UserViewPagerAdapter;
+import com.example.foodorderapp.NewAdapter.AdminViewPagerAdapter;
 import com.example.foodorderapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

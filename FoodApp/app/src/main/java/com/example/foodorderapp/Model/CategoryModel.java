@@ -1,14 +1,19 @@
 package com.example.foodorderapp.Model;
 public class CategoryModel {
-    private int id_category;
+    private String id_category;
     private String Name_category;
     private String image_category;
 
-    public int getId_category() {
+    public CategoryModel(String id_category, String name_category) {
+        this.id_category = id_category;
+        Name_category = name_category;
+    }
+
+    public String getId_category() {
         return id_category;
     }
 
-    public void setId_category(int id_category) {
+    public void setId_category(String id_category) {
         this.id_category = id_category;
     }
 

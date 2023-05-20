@@ -1,21 +1,35 @@
 package com.example.foodorderapp.Model;
 import java.io.Serializable;
 public class FoodModel implements Serializable{
-    private  String id_food;
+    private String id;
+    private  String category_id;
     private String name;
     private String image;
     private String price;
-
-
-
     private String detail;
-
-    public String getId_food() {
-        return id_food;
+    public FoodModel(String id, String categoryid, String detail, String image, String name, String price) {
+        this.id = id;
+        this.category_id = categoryid;
+        this.detail = detail;
+        this.image = image;
+        this.name = name;
+        this.price = price;
     }
 
-    public void setId_food(String id_food) {
-        this.id_food = id_food;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(String category_id) {
+        this.category_id = category_id;
     }
 
     public String getName() {

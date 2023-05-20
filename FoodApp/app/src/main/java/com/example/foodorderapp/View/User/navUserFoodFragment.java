@@ -131,8 +131,9 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
                     if(task.isSuccessful() && task.getResult() != null){
                         List<FoodModel> foodModels = new ArrayList<>();
                         for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
-                            FoodModel foodModel = new FoodModel();
-                            foodModel.setId_food(queryDocumentSnapshot.getId());
+                            FoodModel foodModel = new FoodModel("","","","","","");
+                            foodModel.setId(queryDocumentSnapshot.getId());
+                            foodModel.setCategory_id(queryDocumentSnapshot.getString(Contants.KEY_ID_CATEGORY));
                             foodModel.setName(queryDocumentSnapshot.getString(Contants.KEY_NAME_FOOD));
                             foodModel.setPrice(queryDocumentSnapshot.getString(Contants.KEY_PRICE_FOOD));
                             foodModel.setImage(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_FOOD));
@@ -163,8 +164,8 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
                     if(task.isSuccessful() && task.getResult() != null){
                         List<CategoryModel> categoryModels = new ArrayList<>();
                         for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
-                            CategoryModel categoryModel = new CategoryModel();
-                            categoryModel.setId_category(Integer.parseInt(queryDocumentSnapshot.getString(Contants.KEY_ID_CATEGORY)));
+                            CategoryModel categoryModel = new CategoryModel("","");
+                            categoryModel.setId_category(queryDocumentSnapshot.getId());
                             categoryModel.setName_category(queryDocumentSnapshot.getString(Contants.KEY_NAME_CATEGORY));
                             categoryModel.setImage_category(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_CATEGORY));
                             categoryModels.add(categoryModel);
@@ -233,8 +234,9 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
                     if (task.isSuccessful() && task.getResult() != null) {
                         List<FoodModel> foodModels = new ArrayList<>();
                         for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                            FoodModel foodModel = new FoodModel();
-                            foodModel.setId_food(queryDocumentSnapshot.getId());
+                            FoodModel foodModel = new FoodModel("","","","","","");
+                            foodModel.setId(queryDocumentSnapshot.getId());
+                            foodModel.setCategory_id(queryDocumentSnapshot.getString(Contants.KEY_ID_CATEGORY));
                             foodModel.setName(queryDocumentSnapshot.getString(Contants.KEY_NAME_FOOD));
                             foodModel.setPrice(queryDocumentSnapshot.getString(Contants.KEY_PRICE_FOOD));
                             foodModel.setImage(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_FOOD));
@@ -299,7 +301,7 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
         }
         HashMap<String , Object> order_detail = new HashMap<>();
         order_detail.put(Contants.KEY_ID_ORDER, preferenceManeger.getSrting(Contants.KEY_ID_ORDER));
-        order_detail.put(Contants.KEY_ID_FOOD,foodModel.getId_food());
+        order_detail.put(Contants.KEY_ID_FOOD,foodModel.getId());
         database.collection(Contants.KEY_COLEECTION_ORDER_DETAIL)
                 .whereEqualTo(Contants.KEY_ID_ORDER , preferenceManeger.getSrting(Contants.KEY_ID_ORDER))
                 .get()
@@ -310,7 +312,7 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
                         int soluong = 0 ;
                         for(QueryDocumentSnapshot queryDocumentSnapshot: Task.getResult()){
 
-                            if(queryDocumentSnapshot.getString(Contants.KEY_ID_FOOD).equals(foodModel.getId_food())){
+                            if(queryDocumentSnapshot.getString(Contants.KEY_ID_FOOD).equals(foodModel.getId())){
                                 add = false;
                                 id_detailorder = queryDocumentSnapshot.getId();
                                 soluong = Integer.parseInt(queryDocumentSnapshot.getString("Number"));
@@ -320,7 +322,7 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
                         if(add){
                             HashMap<String , Object> newfood = new HashMap<>();
                             newfood.put("Number", "1");
-                            newfood.put(Contants.KEY_ID_FOOD,foodModel.getId_food());
+                            newfood.put(Contants.KEY_ID_FOOD,foodModel.getId());
                             newfood.put(Contants.KEY_ID_ORDER , preferenceManeger.getSrting(Contants.KEY_ID_ORDER));
                             database.collection(Contants.KEY_COLEECTION_ORDER_DETAIL)
                                     .add(newfood)
@@ -354,12 +356,15 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
                        if(documentChange.getDocument().getId().equals(preferenceManeger.getSrting(Contants.KEY_USER_ID))){
                            String newname = documentChange.getDocument().getString(Contants.KEY_USERNAME);
                            String image = documentChange.getDocument().getString(Contants.KEY_IMAGE_USER);
+                           String phonenumber = documentChange.getDocument().getString(Contants.KEY_PHONE);
                            binding.imgAvatar.setImageBitmap(getAvatarImage(image));
                            binding.tvUsername.setText(newname);
                            preferenceManeger.Remove(Contants.KEY_USERNAME);
                            preferenceManeger.Remove(Contants.KEY_IMAGE_USER);
+                           preferenceManeger.Remove(Contants.KEY_PHONE);
                            preferenceManeger.putString(Contants.KEY_USERNAME , newname);
                            preferenceManeger.putString(Contants.KEY_IMAGE_USER, image);
+                           preferenceManeger.putString(Contants.KEY_PHONE, phonenumber);
                        }
                    }
             }

@@ -1,11 +1,11 @@
-package com.example.foodorderapp.Adapter;
+package com.example.foodorderapp.NewAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.foodorderapp.View.Admin.AdminAccountMangagerFragment;
+import com.example.foodorderapp.View.Admin.AdminAccountManagerFragment;
 import com.example.foodorderapp.View.Admin.AdminCartManagerFragment;
 import com.example.foodorderapp.View.Admin.AdminFoodManagerFragment;
 import com.example.foodorderapp.View.Admin.AdminUserManagerFragment;
@@ -26,7 +26,7 @@ public class AdminViewPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return new AdminCartManagerFragment();
             case 3:
-                return new AdminAccountMangagerFragment();
+                return new AdminAccountManagerFragment();
             default:
                 return new AdminFoodManagerFragment();
         }
@@ -37,3 +37,4 @@ public class AdminViewPagerAdapter extends FragmentPagerAdapter {
         return 4;
     }
 }
+

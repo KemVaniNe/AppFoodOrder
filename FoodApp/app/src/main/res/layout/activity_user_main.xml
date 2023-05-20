@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".View.User.UserMainActivity"
     android:background="@drawable/background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp_main"

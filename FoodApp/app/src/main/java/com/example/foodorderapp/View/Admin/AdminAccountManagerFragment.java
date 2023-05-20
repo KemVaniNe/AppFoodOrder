@@ -29,10 +29,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.foodorderapp.R;
-import com.example.foodorderapp.databinding.FragmentAdminAccountMangagerBinding;
-import com.example.foodorderapp.databinding.FragmentAdminFoodManagerBinding;
+import com.example.foodorderapp.View.Share.LoginActivity;
+import com.example.foodorderapp.databinding.FragmentAdminAccountManagerBinding;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
@@ -42,23 +44,37 @@ import java.util.HashMap;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
-public class AdminAccountMangagerFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link AdminAccountManagerFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class AdminAccountManagerFragment extends Fragment {
 
-    private PreferenceManeger preferenceManeger;
-    private FragmentAdminAccountMangagerBinding binding;
-    private  String encodedImage;
-    private FirebaseFirestore database ;
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public AdminAccountMangagerFragment() {
+    public AdminAccountManagerFragment() {
+        // Required empty public constructor
     }
 
-    public static AdminAccountMangagerFragment newInstance(String param1, String param2) {
-        AdminAccountMangagerFragment fragment = new AdminAccountMangagerFragment();
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment AdminAccountManagerFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static AdminAccountManagerFragment newInstance(String param1, String param2) {
+        AdminAccountManagerFragment fragment = new AdminAccountManagerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -67,13 +83,21 @@ public class AdminAccountMangagerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        binding = FragmentAdminAccountMangagerBinding.inflate(inflater, container, false);
+    }
+    private FragmentAdminAccountManagerBinding binding;
+    private FirebaseFirestore database ;
+    private PreferenceManeger preferenceManeger;
+    private  String encodedImage;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentAdminAccountManagerBinding.inflate(inflater, container, false);
         preferenceManeger = new PreferenceManeger(getActivity());
         database = FirebaseFirestore.getInstance();
         loadUser();
@@ -127,7 +151,7 @@ public class AdminAccountMangagerFragment extends Fragment {
 
     }
     private void showToast(String message){
-        Toast.makeText(getActivity(), message , Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), message , Toast.LENGTH_LONG).show();
     }
     private Boolean isValidRegisterDetail(){
         if(binding.etUsername.getText().toString().trim().isEmpty()){
@@ -148,6 +172,7 @@ public class AdminAccountMangagerFragment extends Fragment {
         binding.etUsername.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
         binding.etPhone.setText(preferenceManeger.getSrting(Contants.KEY_PHONE));
         binding.imgAvatar.setImageBitmap(getAvatarImage(preferenceManeger.getSrting(Contants.KEY_IMAGE_USER)));
+        encodedImage = preferenceManeger.getSrting(Contants.KEY_IMAGE_USER);
         binding.btUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,7 +186,24 @@ public class AdminAccountMangagerFragment extends Fragment {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             pickImage.launch(intent);
         });
+        binding.btLogout.setOnClickListener(v->Logout());
         binding.btUpdatepass.setOnClickListener(v->openChangePassword(Gravity.BOTTOM));
+    }
+    private void Logout(){
+        showToast("Logout..");
+        DocumentReference documentReference = database.collection(Contants.KEY_COLEECTION_USERS)
+                .document(
+                        preferenceManeger.getSrting(Contants.KEY_USER_ID)
+                );
+        HashMap<String , Object> updates = new HashMap<>();
+        updates.put(Contants.KEY_FCM_TOKEN, FieldValue.delete());
+        documentReference.update(updates)
+                .addOnSuccessListener(unused->{
+                    preferenceManeger.clear();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
+                })
+                .addOnFailureListener(e->showToast("Đăng xuất thất bại!"));
     }
     private void openChangePassword(int gravity){
         final Dialog dialog = new Dialog(getContext());
@@ -219,6 +261,8 @@ public class AdminAccountMangagerFragment extends Fragment {
                             .document(user_id)
                             .update(user)
                             .addOnSuccessListener(aVoid -> {
+                                preferenceManeger.Remove(Contants.KEY_PASSWORD);
+                                preferenceManeger.putString(Contants.KEY_PASSWORD , newpass.getText().toString());
                                 showToast("Cập nhật thành công");
                             })
                             .addOnFailureListener(e -> {

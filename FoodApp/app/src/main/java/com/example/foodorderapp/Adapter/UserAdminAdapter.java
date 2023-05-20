@@ -1,72 +1,72 @@
 package com.example.foodorderapp.Adapter;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodorderapp.Model.FoodModel;
 import com.example.foodorderapp.Model.UserModel;
-import com.example.foodorderapp.databinding.ViewholderAdminUserBinding;
+import com.example.foodorderapp.R;
 
 import java.util.List;
 
-public class UserAdminAdapter extends  RecyclerView.Adapter<UserAdminAdapter.UserAdminViewHolder>{
-    private List<UserModel> userModels;
+public class UserAdminAdapter extends RecyclerView.Adapter<UserAdminAdapter.NotificationViewHolder>{
+    private final List<UserModel> listUser;
 
-//    ActivityDetailBinding binding;
-    public UserAdminAdapter(List<UserModel> foodModels) {
-        this.userModels = foodModels;
+    public UserAdminAdapter(List<UserModel> listUser) {
+        this.listUser = listUser;
     }
 
     @NonNull
     @Override
-    public UserAdminAdapter.UserAdminViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ViewholderAdminUserBinding viewholderFoodBinding = ViewholderAdminUserBinding.inflate(
-                LayoutInflater.from(parent.getContext()),
-                parent,
-                false
-        );
-        return new UserAdminAdapter.UserAdminViewHolder(viewholderFoodBinding);
+    public NotificationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_admin_user,parent,false);
+        return new NotificationViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserAdminAdapter.UserAdminViewHolder holder, int position) {
-        holder.setUserdata(userModels.get(position));
-        UserModel user = userModels.get(position);
-        holder.itemView.setOnClickListener(v ->{
-//            Intent intent = new Intent(v.getContext(), DetailActivity.class);
-//            intent.putExtra("name",user.getName());
-//            intent.putExtra("pass",user.getPass());
-//            v.getContext().startActivity(intent);
-        });
+    public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
+        UserModel user = listUser.get(position);
+        if(user == null)
+        {
+            return;
+        }
+        holder.tvName.setText(user.getName());
+
+        if (user.getAvatar() != null) {
+
+            holder.imgImage.setImageBitmap(getAvatarImage(user.getAvatar()));
+        }
     }
+
     @Override
     public int getItemCount() {
-        return userModels.size();
-    }
-
-    class  UserAdminViewHolder extends RecyclerView.ViewHolder{
-
-        ViewholderAdminUserBinding binding;
-        UserAdminViewHolder(@NonNull ViewholderAdminUserBinding viewholderFoodBinding) {
-            super(viewholderFoodBinding.getRoot());
-            binding = viewholderFoodBinding;
-
+        if(listUser != null)
+        {
+            return listUser.size();
         }
-        void setUserdata(UserModel user){
-            binding.tvNameUser.setText(user.getName());
-            binding.tvPassUser.setText(user.getPass());
-        }
-
+        return 0;
     }
-    private Bitmap getFoodImage(String encodeImage){
+    private Bitmap getAvatarImage(String encodeImage){
         byte[] bytes = Base64.decode(encodeImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
     }
+    public static class NotificationViewHolder extends RecyclerView.ViewHolder{
+        private final TextView tvName;
+        private final ImageView imgImage;
+        public NotificationViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvName = itemView.findViewById(R.id.tv_nameUser);
+            imgImage = itemView.findViewById(R.id.img_avatar);
+        }
+    }
+
+
 }

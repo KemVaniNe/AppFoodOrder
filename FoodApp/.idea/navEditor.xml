@@ -8,7 +8,59 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="navAdminDetailFoodFragment">
+                  <entry key="navigationAdminDetailFood">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_navigationAdminDetailFood_to_navigationAdminMainFood">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="navigationAdminMainFood">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_navigationAdminMainFood_to_navigationAdminDetailFood">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_navigationAdminMainFood_to_navigationAdminNewCategory">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_navigationAdminMainFood_to_navigationAdminNewFood">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="navigationAdminNewCategory">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -17,10 +69,19 @@
                             <option name="y" value="-59" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_navigationAdminNewCategory_to_navigationAdminMainFood">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navAdminFoodFragment">
+                  <entry key="navigationAdminNewFood">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -28,6 +89,15 @@
                             <option name="x" value="40" />
                             <option name="y" value="40" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_navigationAdminNewFood_to_navigationAdminMainFood">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

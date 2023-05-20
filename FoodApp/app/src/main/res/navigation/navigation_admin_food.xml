@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_admin_food"
+    app:startDestination="@id/navigationAdminMainFood">
+
+    <fragment
+        android:id="@+id/navigationAdminMainFood"
+        android:name="com.example.foodorderapp.View.Admin.NavigationAdminMainFood"
+        android:label="fragment_navigation_admin_main_food"
+        tools:layout="@layout/fragment_navigation_admin_main_food" >
+        <action
+            android:id="@+id/action_navigationAdminMainFood_to_navigationAdminDetailFood"
+            app:destination="@id/navigationAdminDetailFood" />
+        <action
+            android:id="@+id/action_navigationAdminMainFood_to_navigationAdminNewCategory"
+            app:destination="@id/navigationAdminNewCategory" />
+        <action
+            android:id="@+id/action_navigationAdminMainFood_to_navigationAdminNewFood"
+            app:destination="@id/navigationAdminNewFood" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigationAdminDetailFood"
+        android:name="com.example.foodorderapp.View.Admin.NavigationAdminDetailFood"
+        android:label="fragment_navigation_admin_detail_food"
+        tools:layout="@layout/fragment_navigation_admin_detail_food" >
+        <action
+            android:id="@+id/action_navigationAdminDetailFood_to_navigationAdminMainFood"
+            app:destination="@id/navigationAdminMainFood" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigationAdminNewFood"
+        android:name="com.example.foodorderapp.View.Admin.NavigationAdminNewFood"
+        android:label="fragment_navigation_admin_new_food"
+        tools:layout="@layout/fragment_navigation_admin_new_food" >
+        <action
+            android:id="@+id/action_navigationAdminNewFood_to_navigationAdminMainFood"
+            app:destination="@id/navigationAdminMainFood" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigationAdminNewCategory"
+        android:name="com.example.foodorderapp.View.Admin.NavigationAdminNewCategory"
+        android:label="fragment_navigation_admin_new_category"
+        tools:layout="@layout/fragment_navigation_admin_new_category" >
+        <action
+            android:id="@+id/action_navigationAdminNewCategory_to_navigationAdminMainFood"
+            app:destination="@id/navigationAdminMainFood" />
+    </fragment>
+</navigation>

@@ -141,6 +141,7 @@ public class navUserAccountManagerFragment extends Fragment {
         binding.etUsername.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
         binding.etPhone.setText(preferenceManeger.getSrting(Contants.KEY_PHONE));
         binding.imgAvatar.setImageBitmap(getAvatarImage(preferenceManeger.getSrting(Contants.KEY_IMAGE_USER)));
+        encodedImage = preferenceManeger.getSrting(Contants.KEY_IMAGE_USER);
         binding.btUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,6 +213,8 @@ public class navUserAccountManagerFragment extends Fragment {
                             .document(user_id)
                             .update(user)
                             .addOnSuccessListener(aVoid -> {
+                                preferenceManeger.Remove(Contants.KEY_PASSWORD);
+                                preferenceManeger.putString(Contants.KEY_PASSWORD , newpass.getText().toString());
                                 showToast("Cập nhật thành công");
                             })
                             .addOnFailureListener(e -> {

@@ -1,75 +1,85 @@
 package com.example.foodorderapp.Adapter;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.example.foodorderapp.databinding.ViewholderAdminFoodBinding;
-
 import com.example.foodorderapp.Model.FoodModel;
+import com.example.foodorderapp.R;
+import com.example.foodorderapp.Adapter.FoodAdapter;
+import com.example.foodorderapp.Model.FoodModel;
+import com.example.foodorderapp.listener.FoodAdminListener;
 
 import java.util.List;
 
 public class FoodAdminAdapter extends  RecyclerView.Adapter<FoodAdminAdapter.FoodAdminViewHolder>{
-    private  List<FoodModel> foodModels;
+    private  final List<FoodModel> foodModels;
+    private final FoodAdminListener listener;
 
-//    ActivityDetailBinding binding;
-    public FoodAdminAdapter(List<FoodModel> foodModels) {
+
+    public FoodAdminAdapter(List<FoodModel> foodModels, FoodAdminListener listener) {
+
         this.foodModels = foodModels;
+        this.listener = listener;
     }
+
 
     @NonNull
     @Override
-    public FoodAdminAdapter.FoodAdminViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ViewholderAdminFoodBinding viewholderFoodBinding = ViewholderAdminFoodBinding.inflate(
-                LayoutInflater.from(parent.getContext()),
-                parent,
-                false
-        );
-        return new FoodAdminAdapter.FoodAdminViewHolder(viewholderFoodBinding);
+    public FoodAdminViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_admin_food,parent,false);
+        return new FoodAdminViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FoodAdminAdapter.FoodAdminViewHolder holder, int position) {
-        holder.setFooddata(foodModels.get(position));
+        holder.setListener(foodModels.get(position));
         FoodModel food = foodModels.get(position);
-        holder.itemView.setOnClickListener(v ->{
-//            Intent intent = new Intent(v.getContext(), DetailActivity.class);
-//            intent.putExtra("name", food.getName());
-//            intent.putExtra("price", food.getPrice());
-//            intent.putExtra("detail", food.getDetail());
-//            intent.putExtra("image", food.getImage());
-//            v.getContext().startActivity(intent);
-        });
+        if (food == null) {
+            return;
+        }
+        holder.tvName.setText(food.getName());
+        holder.tvPrice.setText(food.getPrice());
+        if (food.getImage() != null) {
+            byte[] bytes = Base64.decode(food.getImage(), Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            holder.imgImage.setImageBitmap(bitmap);
+
+        }
+
     }
     @Override
     public int getItemCount() {
-        return foodModels.size();
+        if(foodModels != null)
+        {
+            return foodModels.size();
+        }
+        return 0;
     }
 
     class  FoodAdminViewHolder extends RecyclerView.ViewHolder{
-        ViewholderAdminFoodBinding binding;
-        FoodAdminViewHolder(@NonNull ViewholderAdminFoodBinding viewholderFoodBinding) {
-            super(viewholderFoodBinding.getRoot());
-            binding = viewholderFoodBinding;
+        private final TextView tvName;
+        private final ImageView imgImage;
+        private final TextView tvPrice;
+        public FoodAdminViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvName = itemView.findViewById(R.id.tv_nameFood);
+            imgImage = itemView.findViewById(R.id.img_food);
+            tvPrice = itemView.findViewById(R.id.tv_priceFood);
 
         }
-        void setFooddata(FoodModel food){
-            binding.name.setText(food.getName());
-            binding.price.setText(food.getPrice());
-            binding.imagefood.setImageBitmap(getFoodImage(food.getImage()));
+        void setListener(FoodModel food){
+            imgImage.setOnClickListener(v->listener.FoodAdminClick(food));
         }
 
     }
-    private Bitmap getFoodImage(String encodeImage){
-        byte[] bytes = Base64.decode(encodeImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
-    }
+
 }

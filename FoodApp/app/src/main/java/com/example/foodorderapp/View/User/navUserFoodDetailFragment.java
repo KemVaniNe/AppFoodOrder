@@ -119,7 +119,7 @@ public class navUserFoodDetailFragment extends Fragment {
         }
         HashMap<String , Object> order_detail = new HashMap<>();
         order_detail.put(Contants.KEY_ID_ORDER, preferenceManeger.getSrting(Contants.KEY_ID_ORDER));
-        order_detail.put(Contants.KEY_ID_FOOD,foodModel.getId_food());
+        order_detail.put(Contants.KEY_ID_FOOD,foodModel.getCategory_id());
         database.collection(Contants.KEY_COLEECTION_ORDER_DETAIL)
                 .whereEqualTo(Contants.KEY_ID_ORDER , preferenceManeger.getSrting(Contants.KEY_ID_ORDER))
                 .get()
@@ -130,7 +130,7 @@ public class navUserFoodDetailFragment extends Fragment {
                         int soluong = 0 ;
                         for(QueryDocumentSnapshot queryDocumentSnapshot: Task.getResult()){
 
-                            if(queryDocumentSnapshot.getString(Contants.KEY_ID_FOOD).equals(foodModel.getId_food())){
+                            if(queryDocumentSnapshot.getString(Contants.KEY_ID_FOOD).equals(foodModel.getCategory_id())){
                                 add = false;
                                 id_detailorder = queryDocumentSnapshot.getId();
                                 soluong = Integer.parseInt(queryDocumentSnapshot.getString("Number"));
@@ -140,7 +140,7 @@ public class navUserFoodDetailFragment extends Fragment {
                         if(add){
                             HashMap<String , Object> newfood = new HashMap<>();
                             newfood.put("Number", binding.tvNumber.getText());
-                            newfood.put(Contants.KEY_ID_FOOD,foodModel.getId_food());
+                            newfood.put(Contants.KEY_ID_FOOD,foodModel.getCategory_id());
                             newfood.put(Contants.KEY_ID_ORDER , preferenceManeger.getSrting(Contants.KEY_ID_ORDER));
                             database.collection(Contants.KEY_COLEECTION_ORDER_DETAIL)
                                     .add(newfood)
@@ -176,7 +176,7 @@ public class navUserFoodDetailFragment extends Fragment {
                         }
                         if(userModels.size() >0){
                             database.collection(Contants.KEY_COLEECTION_EVALUETION)
-                                    .whereEqualTo(Contants.KEY_ID_FOOD , foodModel.getId_food())
+                                    .whereEqualTo(Contants.KEY_ID_FOOD , foodModel.getId())
                                     .get()
                                     .addOnCompleteListener(Task -> {
                                         if (Task.isSuccessful() && Task.getResult() != null) {
