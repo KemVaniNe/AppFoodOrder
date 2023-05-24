@@ -64,9 +64,9 @@
             app:layout_constraintTop_toBottomOf="@+id/frameLayout">
 
             <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:id="@+id/btn_searchFoodAdmin"
+                android:layout_width="60dp"
+                android:layout_height="47dp"
                 android:layout_marginStart="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -74,17 +74,15 @@
                 app:srcCompat="@drawable/tim_kiem" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/edt_searchFoodAdmin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
                 android:ems="10"
                 android:hint="Find your food"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintStart_toEndOf="@+id/btn_searchFoodAdmin"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:textSize="20dp" />
 

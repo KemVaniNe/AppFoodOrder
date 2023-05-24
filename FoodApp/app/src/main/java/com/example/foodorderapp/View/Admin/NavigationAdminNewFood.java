@@ -3,6 +3,7 @@ package com.example.foodorderapp.View.Admin;
 import static android.app.Activity.RESULT_OK;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -56,6 +57,8 @@ public class NavigationAdminNewFood extends Fragment {
     private AddFoodCategory categoryAdapter;
     private List<CategoryModel> categoryList;
     private static final int PICK_IMAGE_REQUEST = 1;
+
+    private ProgressDialog pd;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,6 +70,8 @@ public class NavigationAdminNewFood extends Fragment {
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spnCategory.setAdapter(categoryAdapter);
         categoryAdapter.notifyDataSetChanged();
+
+        pd = new ProgressDialog(getContext());
 
         binding.spnCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -132,15 +137,19 @@ public class NavigationAdminNewFood extends Fragment {
         Map<String, Object> doc = new HashMap<>();
         doc.put("categoryid", idCate);
         doc.put("image", encodedImage);
-        doc.put("detail",binding.edtName.getText().toString());
-        doc.put("name",binding.edtDetail.getText().toString());
+        doc.put("detail",binding.edtDetail.getText().toString());
+        doc.put("name",binding.edtName.getText().toString());
         doc.put("price",binding.edtPrice.getText().toString());
+
+        pd.setTitle("Adding food...");
+        pd.show();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("foods").add(doc)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        pd.dismiss();
                         Toast.makeText(getContext(), "Thêm món ăn thành công!" , Toast.LENGTH_LONG).show();
                         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_navigationAdminNewFood_to_navigationAdminMainFood);
                     }
@@ -148,6 +157,7 @@ public class NavigationAdminNewFood extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
                         Toast.makeText(getContext(), "Thêm món ăn thất bại thất bại!" , Toast.LENGTH_LONG).show();
                     }
                 });

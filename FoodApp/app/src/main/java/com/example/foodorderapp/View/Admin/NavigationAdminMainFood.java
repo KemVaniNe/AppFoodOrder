@@ -1,5 +1,6 @@
 package com.example.foodorderapp.View.Admin;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -50,11 +52,14 @@ public class NavigationAdminMainFood extends Fragment implements CategoryListene
 
     private int sizeCategory = 0;
 
+    private ProgressDialog pd;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentNavigationAdminMainFoodBinding.inflate(inflater,container,false);
         preferenceManeger = new PreferenceManeger(getActivity());
+        pd = new ProgressDialog(getContext());
 
         View view = binding.getRoot();
         database = FirebaseFirestore.getInstance();
@@ -62,9 +67,7 @@ public class NavigationAdminMainFood extends Fragment implements CategoryListene
         binding.btnNewCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("SizeCategory", sizeCategory);
-                Navigation.findNavController(view).navigate(R.id.action_navigationAdminMainFood_to_navigationAdminNewCategory, bundle);
+                Navigation.findNavController(view).navigate(R.id.action_navigationAdminMainFood_to_navigationAdminNewCategory);
             }
         });
 
@@ -74,6 +77,14 @@ public class NavigationAdminMainFood extends Fragment implements CategoryListene
                 Navigation.findNavController(view).navigate(R.id.action_navigationAdminMainFood_to_navigationAdminNewFood);
             }
         });
+
+        binding.btnSearchFoodAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchFood();
+            }
+        });
+
         return view;
     }
 
@@ -82,6 +93,48 @@ public class NavigationAdminMainFood extends Fragment implements CategoryListene
         super.onViewCreated(view, savedInstanceState);
         loadfood();
         recyclerViewCategory();
+    }
+
+    private void searchFood()
+    {
+        pd.setTitle("Searching food...");
+        pd.show();
+        String text = binding.edtSearchFoodAdmin.getText().toString().trim();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        binding.rvFood.setLayoutManager(linearLayoutManager);
+        database.collection(Contants.KEY_COLEECTION_FOODS)
+                .whereGreaterThanOrEqualTo("name", text)
+                .get()
+                .addOnCompleteListener(task->{
+                    if(task.isSuccessful() && task.getResult() != null){
+                        List<FoodModel> foodModels = new ArrayList<>();
+                        for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+                            FoodModel foodModel = new FoodModel("" ,"","","","","");
+                            foodModel.setId(queryDocumentSnapshot.getId());
+                            foodModel.setCategory_id(queryDocumentSnapshot.getString(Contants.KEY_ID_CATEGORY));
+                            foodModel.setName(queryDocumentSnapshot.getString(Contants.KEY_NAME_FOOD));
+                            foodModel.setPrice(queryDocumentSnapshot.getString(Contants.KEY_PRICE_FOOD));
+                            foodModel.setImage(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_FOOD));
+                            foodModel.setDetail(queryDocumentSnapshot.getString(Contants.KEY_DETAIL_FOOD));
+                            foodModels.add(foodModel);}
+                        if(foodModels.size() >0){
+                            foodAdapter = new FoodAdminAdapter(foodModels,this);
+                            binding.rvFood.setAdapter(foodAdapter);
+                            binding.rvFood.setVisibility(View.VISIBLE);
+                            pd.dismiss();
+                        }else{
+                            pd.dismiss();
+                            Toast.makeText(getContext(), "Không tìm thấy!" , Toast.LENGTH_LONG).show();
+                        }
+                    }else{
+                        pd.dismiss();
+                        showToast("Error recyclerviewfood2");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    pd.dismiss();
+                    System.out.println(e);
+                });
     }
     private void loadUserDetails(){
         binding.tvUsername.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
@@ -130,13 +183,12 @@ public class NavigationAdminMainFood extends Fragment implements CategoryListene
                         List<CategoryModel> categoryModels = new ArrayList<>();
                         for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
                             CategoryModel categoryModel = new CategoryModel("","");
-                            categoryModel.setId_category(queryDocumentSnapshot.getString(Contants.KEY_ID_CATEGORY));
+                            categoryModel.setId_category(queryDocumentSnapshot.getId());
                             categoryModel.setName_category(queryDocumentSnapshot.getString(Contants.KEY_NAME_CATEGORY));
                             categoryModel.setImage_category(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_CATEGORY));
                             categoryModels.add(categoryModel);
                         }
                         if(categoryModels.size() >0){
-                            sizeCategory = categoryModels.size();
                             catetoryAdapter = new CatetoryAdapter(categoryModels,this);
                             binding.rvCategories.setAdapter(catetoryAdapter);
                         }else{

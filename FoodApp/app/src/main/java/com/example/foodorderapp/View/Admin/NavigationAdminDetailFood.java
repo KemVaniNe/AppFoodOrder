@@ -2,6 +2,7 @@ package com.example.foodorderapp.View.Admin;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -53,6 +54,7 @@ public class NavigationAdminDetailFood extends Fragment {
     private AppCompatButton btnUpdate, btnDelete;
     private String encodedImage;
     private View view;
+    private ProgressDialog pd;
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
@@ -60,6 +62,7 @@ public class NavigationAdminDetailFood extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_navigation_admin_detail_food, container, false);
+        pd = new ProgressDialog(getContext());
 
         btnBack = view.findViewById(R.id.btn_back);
         btnUpdate = view.findViewById(R.id.btn_updateFood);
@@ -157,11 +160,14 @@ public class NavigationAdminDetailFood extends Fragment {
         if (name.isEmpty() || price.isEmpty()) {
             Toast.makeText(getContext(), "Vui lòng nhập đủ thông tin!", Toast.LENGTH_LONG).show();
         } else {
+            pd.setTitle("Updating category...");
+            pd.show();
             database.collection("foods").document(foodId)
                     .update("name", name, "price", price, "detail", detail, "image", encodedImage)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            pd.dismiss();
                             Toast.makeText(getContext(), "Cập nhật thông tin món ăn thành công!", Toast.LENGTH_LONG).show();
                             Navigation.findNavController(view).navigate(R.id.action_navigationAdminDetailFood_to_navigationAdminMainFood);
                         }
@@ -169,6 +175,7 @@ public class NavigationAdminDetailFood extends Fragment {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            pd.dismiss();
                             Toast.makeText(getContext(), "Cập nhật thông tin món ăn thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });

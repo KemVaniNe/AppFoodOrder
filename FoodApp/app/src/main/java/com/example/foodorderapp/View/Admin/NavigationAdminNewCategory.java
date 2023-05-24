@@ -2,6 +2,7 @@ package com.example.foodorderapp.View.Admin;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -43,20 +44,20 @@ import java.util.Map;
 
 public class NavigationAdminNewCategory extends Fragment {
     private FragmentNavigationAdminNewCategoryBinding binding ;
-    private int SizeCategory;
 
     private  String encodedImage;
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private View view;
+    private ProgressDialog pd;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_navigation_admin_new_category, container, false);
+        pd = new ProgressDialog(getContext());
 
-        SizeCategory = getArguments().getInt("SizeCategory");
         binding = FragmentNavigationAdminNewCategoryBinding.inflate(inflater , container , false);
 
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
@@ -85,23 +86,27 @@ public class NavigationAdminNewCategory extends Fragment {
 
     private void SaveCategory()
     {
-        String id = String.valueOf(SizeCategory + 1);
         Map<String, Object> doc = new HashMap<>();
         doc.put("image", encodedImage);
         doc.put("name",binding.edtName.getText().toString());
+
+        pd.setTitle("Adding category...");
+        pd.show();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("categorys").add(doc)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        pd.dismiss();
                         Toast.makeText(getContext(), "Thêm category thành công!" , Toast.LENGTH_LONG).show();
-                        Navigation.findNavController(view).navigate(R.id.action_navigationAdminNewCategory_to_navigationAdminMainFood);
+                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_navigationAdminNewCategory_to_navigationAdminMainFood);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
                         Toast.makeText(getContext(), "Thêm category thất bại!" , Toast.LENGTH_LONG).show();
                     }
                 });
