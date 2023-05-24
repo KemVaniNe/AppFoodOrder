@@ -160,7 +160,7 @@ public class NavigationAdminDetailFood extends Fragment {
         if (name.isEmpty() || price.isEmpty()) {
             Toast.makeText(getContext(), "Vui lòng nhập đủ thông tin!", Toast.LENGTH_LONG).show();
         } else {
-            pd.setTitle("Updating category...");
+            pd.setTitle("Updating food...");
             pd.show();
             database.collection("foods").document(foodId)
                     .update("name", name, "price", price, "detail", detail, "image", encodedImage)
