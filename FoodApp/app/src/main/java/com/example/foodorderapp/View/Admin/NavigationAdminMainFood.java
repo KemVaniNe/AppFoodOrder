@@ -64,6 +64,8 @@ public class NavigationAdminMainFood extends Fragment implements CategoryListene
         View view = binding.getRoot();
         database = FirebaseFirestore.getInstance();
         loadUserDetails();
+        loadfood();
+        recyclerViewCategory();
         binding.btnNewCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,14 +90,52 @@ public class NavigationAdminMainFood extends Fragment implements CategoryListene
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        loadfood();
-        recyclerViewCategory();
+    private void searchFood()
+    {
+        String textSearch = binding.edtSearchFoodAdmin.getText().toString().trim().toLowerCase();
+        pd.setTitle("Searching food...");
+        pd.show();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        binding.rvFood.setLayoutManager(linearLayoutManager);
+        database.collection(Contants.KEY_COLEECTION_FOODS)
+                .get()
+                .addOnCompleteListener(task->{
+                    if(task.isSuccessful() && task.getResult() != null){
+                        List<FoodModel> foodModels = new ArrayList<>();
+                        for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+                            FoodModel foodModel = new FoodModel("" ,"","","","","");
+                            foodModel.setId(queryDocumentSnapshot.getId());
+                            foodModel.setCategory_id(queryDocumentSnapshot.getString(Contants.KEY_ID_CATEGORY));
+                            foodModel.setName(queryDocumentSnapshot.getString(Contants.KEY_NAME_FOOD));
+                            foodModel.setPrice(queryDocumentSnapshot.getString(Contants.KEY_PRICE_FOOD));
+                            foodModel.setImage(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_FOOD));
+                            foodModel.setDetail(queryDocumentSnapshot.getString(Contants.KEY_DETAIL_FOOD));
+                            foodModels.add(foodModel);}
+                        if(foodModels.size() >0){
+                            List<FoodModel> newList = new ArrayList<>();
+                            for (FoodModel food : foodModels) {
+                                if (food.getName().toLowerCase().contains(textSearch)) {
+                                    newList.add(food);
+                                }
+                            }
+                            foodAdapter = new FoodAdminAdapter(newList,this);
+                            binding.rvFood.setAdapter(foodAdapter);
+                            pd.dismiss();
+                            binding.rvFood.setVisibility(View.VISIBLE);
+                        }else{
+                            pd.dismiss();
+                        }
+                    }else{
+                        pd.dismiss();
+                        Toast.makeText(getContext(), "Không tìm thấy!" , Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    System.out.println(e);
+                });
     }
 
-    private void searchFood()
+ /*   private void searchFood()
     {
         pd.setTitle("Searching food...");
         pd.show();
@@ -135,7 +175,7 @@ public class NavigationAdminMainFood extends Fragment implements CategoryListene
                     pd.dismiss();
                     System.out.println(e);
                 });
-    }
+    }*/
     private void loadUserDetails(){
         binding.tvUsername.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
         binding.imgAvatar.setImageBitmap(getAvatarImage(preferenceManeger.getSrting(Contants.KEY_IMAGE_USER)));

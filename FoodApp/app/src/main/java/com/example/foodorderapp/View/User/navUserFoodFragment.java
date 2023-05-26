@@ -1,5 +1,6 @@
 package com.example.foodorderapp.View.User;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.foodorderapp.Adapter.CatetoryAdapter;
 import com.example.foodorderapp.Adapter.FoodAdapter;
+import com.example.foodorderapp.Adapter.FoodAdminAdapter;
 import com.example.foodorderapp.Adapter.PosterAdapter;
 import com.example.foodorderapp.Model.CategoryModel;
 import com.example.foodorderapp.Model.FoodModel;
@@ -58,24 +60,9 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
     private ViewPager viewPager;
     private CircleIndicator circleIndicator;
     private PosterAdapter posterAdapter;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
-    private String mParam2;
+    private ProgressDialog pd;
 
-    public navUserFoodFragment() {
-    }
-
-
-    public static navUserFoodFragment newInstance(String param1, String param2) {
-        navUserFoodFragment fragment = new navUserFoodFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,13 +73,17 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         binding = FragmentNavUserFoodBinding.inflate(inflater,container,false);
         preferenceManeger = new PreferenceManeger(getActivity());
         database = FirebaseFirestore.getInstance();
+        pd = new ProgressDialog(getContext());
+
+        binding.btnSearchFoodUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchFood();
+            }
+        });
         loadUserDetails();
         getToken();
         setListener();
@@ -112,6 +103,53 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
 
         return view;
     }
+
+    private void searchFood()
+    {
+        String textSearch = binding.edtSearchFoodUser.getText().toString().trim().toLowerCase();
+        pd.setTitle("Searching food...");
+        pd.show();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        binding.recyclerviewfood.setLayoutManager(linearLayoutManager);
+
+        database.collection(Contants.KEY_COLEECTION_FOODS)
+                .get()
+                .addOnCompleteListener(task->{
+                    if(task.isSuccessful() && task.getResult() != null){
+                        List<FoodModel> foodModels = new ArrayList<>();
+                        for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+                            FoodModel foodModel = new FoodModel("","","","","","");
+                            foodModel.setId(queryDocumentSnapshot.getId());
+                            foodModel.setCategory_id(queryDocumentSnapshot.getString(Contants.KEY_ID_CATEGORY));
+                            foodModel.setName(queryDocumentSnapshot.getString(Contants.KEY_NAME_FOOD));
+                            foodModel.setPrice(queryDocumentSnapshot.getString(Contants.KEY_PRICE_FOOD));
+                            foodModel.setImage(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_FOOD));
+                            foodModel.setDetail(queryDocumentSnapshot.getString(Contants.KEY_DETAIL_FOOD));
+                            foodModels.add(foodModel);}
+                        if(foodModels.size() >0){
+                            List<FoodModel> newList = new ArrayList<>();
+                            for (FoodModel food : foodModels) {
+                                if (food.getName().toLowerCase().contains(textSearch)) {
+                                    newList.add(food);
+                                }
+                            }
+                            foodAdapter = new FoodAdapter(newList,this);
+                            binding.recyclerviewfood.setAdapter(foodAdapter);
+                            pd.dismiss();
+                            binding.recyclerviewfood.setVisibility(View.VISIBLE);
+                        }else{
+                            pd.dismiss();
+                        }
+                    }else{
+                        pd.dismiss();
+                        Toast.makeText(getContext(), "Không tìm thấy!" , Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    System.out.println(e);
+                });
+    }
+
     private List<Poster> getListPoster(){
         List<Poster> list = new ArrayList<>();
         list.add(new Poster(R.drawable.poster1));
@@ -184,6 +222,7 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
 
     private void setListener(){
         binding.imgAvatar.setOnClickListener(v->Logout());
+
     }
     private void loadUserDetails(){
         binding.tvUsername.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
