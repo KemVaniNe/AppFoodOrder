@@ -135,47 +135,6 @@ public class NavigationAdminMainFood extends Fragment implements CategoryListene
                 });
     }
 
- /*   private void searchFood()
-    {
-        pd.setTitle("Searching food...");
-        pd.show();
-        String text = binding.edtSearchFoodAdmin.getText().toString().trim();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        binding.rvFood.setLayoutManager(linearLayoutManager);
-        database.collection(Contants.KEY_COLEECTION_FOODS)
-                .whereGreaterThanOrEqualTo("name", text)
-                .get()
-                .addOnCompleteListener(task->{
-                    if(task.isSuccessful() && task.getResult() != null){
-                        List<FoodModel> foodModels = new ArrayList<>();
-                        for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
-                            FoodModel foodModel = new FoodModel("" ,"","","","","");
-                            foodModel.setId(queryDocumentSnapshot.getId());
-                            foodModel.setCategory_id(queryDocumentSnapshot.getString(Contants.KEY_ID_CATEGORY));
-                            foodModel.setName(queryDocumentSnapshot.getString(Contants.KEY_NAME_FOOD));
-                            foodModel.setPrice(queryDocumentSnapshot.getString(Contants.KEY_PRICE_FOOD));
-                            foodModel.setImage(queryDocumentSnapshot.getString(Contants.KEY_IMAGE_FOOD));
-                            foodModel.setDetail(queryDocumentSnapshot.getString(Contants.KEY_DETAIL_FOOD));
-                            foodModels.add(foodModel);}
-                        if(foodModels.size() >0){
-                            foodAdapter = new FoodAdminAdapter(foodModels,this);
-                            binding.rvFood.setAdapter(foodAdapter);
-                            binding.rvFood.setVisibility(View.VISIBLE);
-                            pd.dismiss();
-                        }else{
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Không tìm thấy!" , Toast.LENGTH_LONG).show();
-                        }
-                    }else{
-                        pd.dismiss();
-                        showToast("Error recyclerviewfood2");
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    pd.dismiss();
-                    System.out.println(e);
-                });
-    }*/
     private void loadUserDetails(){
         binding.tvUsername.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
         binding.imgAvatar.setImageBitmap(getAvatarImage(preferenceManeger.getSrting(Contants.KEY_IMAGE_USER)));
