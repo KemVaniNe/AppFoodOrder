@@ -15,16 +15,22 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.foodorderapp.R;
+import com.example.foodorderapp.View.Share.LoginActivity;
 import com.example.foodorderapp.databinding.FragmentNavUserAccountBinding;
 import com.example.foodorderapp.databinding.FragmentUserAccountBinding;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
 
 public class NavUserAccountFragment extends Fragment {
     private FragmentNavUserAccountBinding binding;
@@ -71,7 +77,27 @@ public class NavUserAccountFragment extends Fragment {
                 transaction.commit();
             }
         });
+        binding.btnLogout.setOnClickListener(v->Logout());
         return binding.getRoot();
+    }
+    private void showToast(String message){
+        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
+    }
+    private void Logout(){
+        showToast("Logout..");
+        DocumentReference documentReference = database.collection(Contants.KEY_COLEECTION_USERS)
+                .document(
+                        preferenceManeger.getSrting(Contants.KEY_USER_ID)
+                );
+        HashMap<String , Object> updates = new HashMap<>();
+        updates.put(Contants.KEY_FCM_TOKEN, FieldValue.delete());
+        documentReference.update(updates)
+                .addOnSuccessListener(unused->{
+                    preferenceManeger.clear();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
+                })
+                .addOnFailureListener(e->showToast("Đăng xuất thất bại!"));
     }
     private void loadUserDetails(){
         binding.txtuser.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));

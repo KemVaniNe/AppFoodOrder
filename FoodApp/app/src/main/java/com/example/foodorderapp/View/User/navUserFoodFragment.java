@@ -86,7 +86,6 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
         });
         loadUserDetails();
         getToken();
-        setListener();
         loadfood();
         LoadidOrder();
         recyclerViewCategory();
@@ -220,10 +219,6 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
                 });
     }
 
-    private void setListener(){
-        binding.imgAvatar.setOnClickListener(v->Logout());
-
-    }
     private void loadUserDetails(){
         binding.tvUsername.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
         binding.imgAvatar.setImageBitmap(getAvatarImage(preferenceManeger.getSrting(Contants.KEY_IMAGE_USER)));
@@ -244,22 +239,7 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
                 .addOnFailureListener(e->showToast("Cập nhật Token thất bại!"));
     }
 
-    private void Logout(){
-        showToast("Logout..");
-        DocumentReference documentReference = database.collection(Contants.KEY_COLEECTION_USERS)
-                .document(
-                        preferenceManeger.getSrting(Contants.KEY_USER_ID)
-                );
-        HashMap<String , Object> updates = new HashMap<>();
-        updates.put(Contants.KEY_FCM_TOKEN, FieldValue.delete());
-        documentReference.update(updates)
-                .addOnSuccessListener(unused->{
-                    preferenceManeger.clear();
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                    getActivity().finish();
-                })
-                .addOnFailureListener(e->showToast("Đăng xuất thất bại!"));
-    }
+
 
 
     @Override
