@@ -89,7 +89,7 @@ public class navUserCartFragment extends Fragment  implements HistoryListener, D
                             }
                         }
                         if(historyModels.size() > 0){
-                            adapter = new HistoryAdapter(historyModels, this);
+                            adapter = new HistoryAdapter(historyModels, this , preferenceManeger.getSrting(Contants.KEY_ROLE_USER));
                             binding.recyclerview.setAdapter(adapter);
                         }
                     }
@@ -140,7 +140,7 @@ public class navUserCartFragment extends Fragment  implements HistoryListener, D
                                                 }
                                             }
                                             if(foodOrderModels.size() >0){
-                                                detailHistoryAdapter = new DetailHistoryAdapter(foodOrderModels,this);
+                                                detailHistoryAdapter = new DetailHistoryAdapter(foodOrderModels,this, preferenceManeger.getSrting(Contants.KEY_ROLE_USER));
                                                 RecyclerView recyclerView = viewdialog.findViewById(R.id.rcv_detailhistories);
                                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                                                 recyclerView.setNestedScrollingEnabled(true);

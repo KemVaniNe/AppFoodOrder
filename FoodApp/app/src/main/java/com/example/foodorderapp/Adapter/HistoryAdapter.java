@@ -1,6 +1,7 @@
 package com.example.foodorderapp.Adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -12,10 +13,11 @@ import java.util.List;
 import com.example.foodorderapp.databinding.ViewholderUserHistoryBinding;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
     private final List<HistoryModel> list ;
-
-    public HistoryAdapter(List<HistoryModel> list, HistoryListener listener) {
+    private  final String Role ;
+    public HistoryAdapter(List<HistoryModel> list, HistoryListener listener, String Role) {
         this.list = list;
         this.listener = listener;
+        this.Role = Role;
     }
 
     private final HistoryListener listener;
@@ -33,7 +35,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
-        holder.setData(list.get(position));
+        holder.setData(list.get(position), this.Role);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             super(viewholderHistoryBinding.getRoot());
             binding = viewholderHistoryBinding;
         }
-        void setData(HistoryModel historyModel){
+        void setData(HistoryModel historyModel, String Role){
             if(historyModel.isStatus()){
                 binding.stutas.setText("Đã thanh toán");
             }else{
@@ -57,7 +59,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             binding.tvCreateAt.setText(historyModel.getCreateAt());
             binding.tvTotal.setText(String.valueOf(historyModel.getTotalPrice()));
             binding.btnView.setOnClickListener(v->listener.ViewClick(historyModel.getId()));
-            binding.btnDel.setOnClickListener(v-> listener.DelClick(historyModel.getId()));
+            if(Role.equals("User")){
+                binding.btnDel.setOnClickListener(v-> listener.DelClick(historyModel.getId()));
+            }else{
+                binding.btnDel.setVisibility(View.GONE);
+            }
         }
     }
 }

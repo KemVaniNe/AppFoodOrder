@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -19,10 +20,11 @@ public class DetailHistoryAdapter extends RecyclerView.Adapter<DetailHistoryAdap
 
     private  final List<FoodOrderModel> foodOrderModels;
     private final DetailHistoryListener listener;
-
-    public DetailHistoryAdapter(List<FoodOrderModel> foodOrderModels, DetailHistoryListener listener) {
+    private final String Role;
+    public DetailHistoryAdapter(List<FoodOrderModel> foodOrderModels, DetailHistoryListener listener , String Role) {
         this.foodOrderModels = foodOrderModels;
         this.listener = listener;
+        this.Role = Role;
     }
 
     @NonNull
@@ -38,7 +40,7 @@ public class DetailHistoryAdapter extends RecyclerView.Adapter<DetailHistoryAdap
 
     @Override
     public void onBindViewHolder(@NonNull DetailHistoryViewHolder holder, int position) {
-        holder.setFooddata(foodOrderModels.get(position));
+        holder.setFooddata(foodOrderModels.get(position), Role);
     }
 
     @Override
@@ -53,12 +55,16 @@ public class DetailHistoryAdapter extends RecyclerView.Adapter<DetailHistoryAdap
             binding = activityDetailBinding;
         }
 
-        void setFooddata(FoodOrderModel foodOrderModel){
+        void setFooddata(FoodOrderModel foodOrderModel, String Role){
             binding.tvNameFood.setText(foodOrderModel.getNameFood());
             binding.totalFood.setText(String.valueOf(foodOrderModel.getPrice()*foodOrderModel.getNumber()));
             binding.imageOder.setImageBitmap(getCartImage(foodOrderModel.getImageFood()));
             binding.tvNumber.setText(String.valueOf(foodOrderModel.getNumber()));
-            binding.imgEvaluation.setOnClickListener(v->listener.evaluationClick(foodOrderModel.getId()));
+            if(Role.equals("User")){
+                binding.imgEvaluation.setOnClickListener(v->listener.evaluationClick(foodOrderModel.getId()));
+            }else{
+                binding.imgEvaluation.setVisibility(View.GONE);
+            }
         }
     }
     private Bitmap getCartImage(String encodeImage){
