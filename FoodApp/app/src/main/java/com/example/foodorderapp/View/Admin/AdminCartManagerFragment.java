@@ -20,6 +20,7 @@ import com.example.foodorderapp.Adapter.CartManagerAdapter;
 import com.example.foodorderapp.Adapter.DetailHistoryAdapter;
 import com.example.foodorderapp.Adapter.HistoryAdapter;
 import com.example.foodorderapp.Adapter.UserAdminAdapter;
+import com.example.foodorderapp.Model.FoodModel;
 import com.example.foodorderapp.Model.FoodOrderModel;
 import com.example.foodorderapp.Model.HistoryModel;
 import com.example.foodorderapp.Model.UserModel;
@@ -41,36 +42,10 @@ import java.util.List;
 
 public class AdminCartManagerFragment extends Fragment implements HistoryListener , UserHistoryListener {
 
-    // TODO: Rename parameter arguments, choose names that mat
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
     private List<UserModel> listUser;
     private CartManagerAdapter adapter;
     private HistoryAdapter historyAdapter ;
     private DetailHistoryAdapter detailHistoryAdapter;
-    public AdminCartManagerFragment() {
-    }
-
-    public static AdminCartManagerFragment newInstance(String param1, String param2) {
-        AdminCartManagerFragment fragment = new AdminCartManagerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
     private FragmentAdminCartManagerBinding binding ;
     private FirebaseFirestore database ;
     private PreferenceManeger preferenceManeger;
@@ -82,7 +57,51 @@ public class AdminCartManagerFragment extends Fragment implements HistoryListene
         database = FirebaseFirestore.getInstance();
         loadUserDetails();
         loadUser();
+
+        binding.btnSearchCartAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchCart();
+            }
+        });
         return binding.getRoot();
+    }
+
+    private void searchCart()
+    {
+        String textSearch = binding.edtSearchCartAdmin.getText().toString().trim().toLowerCase();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        binding.recyclerview.setLayoutManager(linearLayoutManager);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        listUser = new ArrayList<>();
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful() && task.getResult() != null){
+                        for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+                            UserModel userModel = new UserModel();
+                            userModel.setId(queryDocumentSnapshot.getId());
+                            userModel.setName(queryDocumentSnapshot.getString(Contants.KEY_USERNAME));
+                            listUser.add(userModel);
+                        }
+                        if(listUser.size() >0){
+                            List<UserModel> newList = new ArrayList<>();
+                            for (UserModel food : listUser) {
+                                if (food.getName().toLowerCase().contains(textSearch)) {
+                                    newList.add(food);
+                                }
+                            }
+                            adapter = new CartManagerAdapter(newList, this);
+                            binding.recyclerview.setAdapter(adapter);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("DEBUG","fail user list: " + e.getMessage());
+                    }
+                });
     }
     private void loadUserDetails(){
         binding.tvUsername.setText(preferenceManeger.getSrting(Contants.KEY_USERNAME));
