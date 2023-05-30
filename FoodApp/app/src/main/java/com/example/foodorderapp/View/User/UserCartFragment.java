@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.Gravity;
@@ -23,6 +25,7 @@ import com.example.foodorderapp.databinding.FragmentUserCartBinding;
 import com.example.foodorderapp.listener.OrderAddorSubListener;
 import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -44,14 +47,13 @@ public class UserCartFragment extends Fragment implements OrderAddorSubListener 
     FirebaseFirestore database ;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    public UserMainActivity userMainActivity;
     private String mParam1;
     private String mParam2;
 
     public UserCartFragment() {
 
     }
-
     public static UserCartFragment newInstance(String param1, String param2) {
         UserCartFragment fragment = new UserCartFragment();
         Bundle args = new Bundle();
@@ -67,6 +69,7 @@ public class UserCartFragment extends Fragment implements OrderAddorSubListener 
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
         binding = FragmentUserCartBinding.inflate(inflater, container, false);
         preferenceManeger = new PreferenceManeger(getActivity());
         database = FirebaseFirestore.getInstance();
@@ -82,18 +85,18 @@ public class UserCartFragment extends Fragment implements OrderAddorSubListener 
         SimpleDateFormat ft = new SimpleDateFormat("yyyy.MM.dd ");
 
         binding.tvOrder.setOnClickListener(v->{
-           Map<String, Object> updates = new HashMap<>();
-           updates.put(Contants.KEY_STATUS_ORDER, true );
-           updates.put("CreateAt" , ft.format(dnow) );
-           updates.put("Total" , binding.tvTotal.getText());
-           DocumentReference documentReference =
-                   database.collection(Contants.KEY_COLEECTION_ORDER).document(
-                           preferenceManeger.getSrting(Contants.KEY_ID_ORDER)
-                   );
-           documentReference.update(updates)
-                   .addOnSuccessListener(unused->showToast("Đặt món thành công!"))
-                   .addOnFailureListener(e->showToast("Đặt món thất bại!"));
-           preferenceManeger.Remove(Contants.KEY_ID_ORDER);
+//           Map<String, Object> updates = new HashMap<>();
+//           updates.put(Contants.KEY_STATUS_ORDER, true );
+//           updates.put("CreateAt" , ft.format(dnow) );
+//           updates.put("Total" , binding.tvTotal.getText());
+//           DocumentReference documentReference =
+//                   database.collection(Contants.KEY_COLEECTION_ORDER).document(
+//                           preferenceManeger.getSrting(Contants.KEY_ID_ORDER)
+//                   );
+//           documentReference.update(updates)
+//                   .addOnSuccessListener(unused->showToast("Đặt món thành công!"))
+//                   .addOnFailureListener(e->showToast("Đặt món thất bại!"));
+//           preferenceManeger.Remove(Contants.KEY_ID_ORDER);
             openDialog(Gravity.CENTER);
 
         });
@@ -126,11 +129,9 @@ public class UserCartFragment extends Fragment implements OrderAddorSubListener 
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                UserMainFragment fragment = new UserMainFragment();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.user_cart, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                if (getActivity() instanceof UserMainActivity) {
+                    ((UserMainActivity) getActivity()).switchToMenu(0);
+                }
             }
         });
         dialog.show();
@@ -138,7 +139,6 @@ public class UserCartFragment extends Fragment implements OrderAddorSubListener 
     public void loadCart(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         binding.rclFoodOrdered.setLayoutManager(linearLayoutManager);
-
         database.collection(Contants.KEY_COLEECTION_ORDER_DETAIL)
                 .whereEqualTo(Contants.KEY_ID_ORDER, preferenceManeger.getSrting(Contants.KEY_ID_ORDER))
                 .get()

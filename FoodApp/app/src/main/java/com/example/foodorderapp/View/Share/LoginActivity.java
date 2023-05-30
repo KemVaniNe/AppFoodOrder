@@ -14,6 +14,7 @@ import com.example.foodorderapp.utilities.Contants;
 import com.example.foodorderapp.utilities.PreferenceManeger;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -21,9 +22,11 @@ public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
     private PreferenceManeger preferenceManeger;
+    private FirebaseFirestore database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        database = FirebaseFirestore.getInstance();
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         preferenceManeger = new PreferenceManeger(getApplicationContext());
         if(preferenceManeger.getBoolean(Contants.KEY_IS_LOGINED_IN)){
@@ -52,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         );
     }
     private void Login(){
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
+
         database.collection(Contants.KEY_COLEECTION_USERS)
                 .whereEqualTo(Contants.KEY_USERNAME, binding.etUsername.getText().toString())
                 .get()
@@ -74,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             }else{
+                                LoadidOrder();
                                 Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
@@ -100,5 +104,24 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             return true;
         }
+    }
+    public void LoadidOrder(){
+        database.collection(Contants.KEY_COLEECTION_ORDER)
+                .whereEqualTo(Contants.KEY_USER_ID, preferenceManeger.getSrting(Contants.KEY_USER_ID))
+                .get()
+                .addOnCompleteListener(Task -> {
+                    if(Task.isSuccessful() && Task.getResult() != null){
+                        for(QueryDocumentSnapshot queryDocumentSnapshot: Task.getResult()){
+
+                            if(!queryDocumentSnapshot.getBoolean(Contants.KEY_STATUS_ORDER)){
+                                preferenceManeger.putString(Contants.KEY_ID_ORDER, queryDocumentSnapshot.getId());
+
+                                break;
+                            }
+
+                        }
+
+                    }
+                });
     }
 }

@@ -13,15 +13,16 @@ import com.example.foodorderapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UserMainActivity extends AppCompatActivity {
-    private ViewPager mViewPager;
-    private BottomNavigationView mBottomNavigationView;
+    public ViewPager mViewPager;
+    public BottomNavigationView mBottomNavigationView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
         mViewPager = findViewById(R.id.vp_main);
         mBottomNavigationView = findViewById(R.id.bottom_navigation);
-
         UserViewPagerAdapter adapter = new UserViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mViewPager.setAdapter(adapter);
 
@@ -69,5 +70,18 @@ public class UserMainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
     }
+    public void switchToMenu(int menuId) {
+        switch (menuId) {
+            case 0:
+                mViewPager.setCurrentItem(0);
+                break;
+            case 1:
+                mViewPager.setCurrentItem(1);
+                break;
+
+        }
+    }
+
 }

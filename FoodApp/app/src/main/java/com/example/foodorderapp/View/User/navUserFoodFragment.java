@@ -84,10 +84,10 @@ public class navUserFoodFragment extends Fragment implements CategoryListener, F
                 searchFood();
             }
         });
+        LoadidOrder();
         loadUserDetails();
         getToken();
         loadfood();
-        LoadidOrder();
         recyclerViewCategory();
         listenModifyUser();
         View view = binding.getRoot();

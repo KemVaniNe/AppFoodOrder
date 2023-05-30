@@ -73,8 +73,8 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.CartViewHolde
                 number += 1;
                 totalprice -= Integer.parseInt(binding.totalPrice.getText().toString());
                 price = number*foodOrderModel.getPrice();
-                binding.totalPrice.setText(String.valueOf(price));
-                binding.tvNumber.setText(String.valueOf(number));
+//                binding.totalPrice.setText(String.valueOf(price));
+//                binding.tvNumber.setText(String.valueOf(number));
                 listener.AddorSubClick(totalprice + price,number,foodOrderModel.getId());
             });
             binding.btnSub.setOnClickListener(v->{
@@ -84,9 +84,9 @@ public class CartAdapter extends  RecyclerView.Adapter<CartAdapter.CartViewHolde
                     number -= 1;
                     totalprice -= Integer.parseInt(binding.totalPrice.getText().toString());
                     price = number*foodOrderModel.getPrice();
-                    binding.totalPrice.setText(String.valueOf(price));
+//                    binding.totalPrice.setText(String.valueOf(price));
                 }
-                binding.tvNumber.setText(String.valueOf(number));
+//                binding.tvNumber.setText(String.valueOf(number));
                 listener.AddorSubClick(totalprice + price , number,foodOrderModel.getId());
             });
         }

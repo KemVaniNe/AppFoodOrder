@@ -119,7 +119,7 @@ public class navUserFoodDetailFragment extends Fragment {
         }
         HashMap<String , Object> order_detail = new HashMap<>();
         order_detail.put(Contants.KEY_ID_ORDER, preferenceManeger.getSrting(Contants.KEY_ID_ORDER));
-        order_detail.put(Contants.KEY_ID_FOOD,foodModel.getCategory_id());
+        order_detail.put(Contants.KEY_ID_FOOD,foodModel.getId());
         database.collection(Contants.KEY_COLEECTION_ORDER_DETAIL)
                 .whereEqualTo(Contants.KEY_ID_ORDER , preferenceManeger.getSrting(Contants.KEY_ID_ORDER))
                 .get()
@@ -130,7 +130,7 @@ public class navUserFoodDetailFragment extends Fragment {
                         int soluong = 0 ;
                         for(QueryDocumentSnapshot queryDocumentSnapshot: Task.getResult()){
 
-                            if(queryDocumentSnapshot.getString(Contants.KEY_ID_FOOD).equals(foodModel.getCategory_id())){
+                            if(queryDocumentSnapshot.getString(Contants.KEY_ID_FOOD).equals(foodModel.getId())){
                                 add = false;
                                 id_detailorder = queryDocumentSnapshot.getId();
                                 soluong = Integer.parseInt(queryDocumentSnapshot.getString("Number"));
@@ -152,7 +152,11 @@ public class navUserFoodDetailFragment extends Fragment {
                                             id_detailorder
                                     );
                             documentReference.update("Number",String.valueOf(soluong + Integer.parseInt((String) binding.tvNumber.getText())) )
-                                    .addOnSuccessListener(unused->showToast("Đặt món thành công!"))
+                                    .addOnSuccessListener(unused->{
+                                        if (getActivity() instanceof UserMainActivity) {
+                                            ((UserMainActivity) getActivity()).switchToMenu(1);
+                                        }
+                                    })
                                     .addOnFailureListener(e->showToast("Đặt món thất bại!"));
                         }
                     }
